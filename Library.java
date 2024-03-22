@@ -66,18 +66,56 @@ public class Library {
     public boolean borrow(Borrow borrow, int userBorrow) {
         if (borrow.isStudent()) {
             if (userBorrow < 3) {
+
                 if (isAllowed(borrow)) {
+
                     return true;
                 }
             }
         } else {
             if (userBorrow < 5) {
+
                 if (isAllowed(borrow)) {
+
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public boolean checkdoublacheck(String userId, String DocumentId) {
+
+        for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
+            for (Borrow borrow : docBorrows) {
+                if (borrow.getUserId().equals(userId) && borrow.getDocumentId().equals(DocumentId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    public boolean checkAvailabilityBorrow(String docId) {
+
+        Document doc = documents.get(docId);
+        if (doc instanceof BuyableBook || doc instanceof TreasureBook) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public boolean isIsBook(String docId) {
+        Document doc = documents.get(docId);
+        if (doc instanceof Book) {
+            return true;
+
+        }
+        return false;
+
     }
 
     public boolean isAllowed(Borrow borrow) {
@@ -92,6 +130,7 @@ public class Library {
                 borrows.put(borrow.getDocumentId(), borrows1);
                 return true;
             }
+
             return false;
         }
         if (countDocs(borrow.getDocumentId()) == 0) {
@@ -99,6 +138,7 @@ public class Library {
             borrows.put(borrow.getDocumentId(), borrows1);
             return true;
         }
+
         return false;
     }
 

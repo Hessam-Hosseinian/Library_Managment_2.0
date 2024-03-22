@@ -323,15 +323,36 @@ public class Manegment {
         }
 
         Library targetLibrary = libraries.get(borrow.getLibraryId());
+
         if (targetLibrary == null) {
             return "not-found";
+        }
+        if (targetLibrary.isIsBook(borrow.getDocumentId())) {
+            borrow.setIsBook(true);
+        } else {
+            borrow.setIsBook(false);
         }
         if (targetLibrary.checkDocument(borrow.getDocumentId())) {
             return "not-found";
         }
-        if (!targetLibrary.borrow(borrow, countBorrow(borrow.getUserId()))) {
+        for (Library library : libraries.values()) {
+            if (library.checkdoublacheck(borrow.getUserId(), borrow.getDocumentId())) {
+
+                return "not-allowed";
+
+            }
+
+        }
+        if (targetLibrary.checkAvailabilityBorrow(borrow.getDocumentId())) {
+
             return "not-allowed";
         }
+
+        if (!targetLibrary.borrow(borrow, countBorrow(borrow.getUserId()))) {
+
+            return "not-allowed";
+        }
+
         return "success";
     }
 

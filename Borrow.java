@@ -25,45 +25,6 @@ public class Borrow {
     // ------------------------------------------------------------------------------------------------------------------
     // !------------------------------------------------------------------------------
 
-    // public boolean checkUser(HashSet<String> usersIds) {
-    // User targetUser =
-    // if (studentIds.contains(userId)) {
-
-    // this.isStudent = true;
-    // return true;
-
-    // }
-
-    // else if (staffIds.contains(userId)) {
-
-    // this.isStudent = false;
-    // return true;
-
-    // }
-
-    // return false;
-    // }
-
-    // !------------------------------------------------------------------------------
-
-    public boolean checkDoc(HashSet<String> bookIds, HashSet<String> thesisIds) {
-        if (bookIds.contains(documentId)) {
-
-            this.isBook = true;
-            return true;
-
-        }
-
-        else if (thesisIds.contains(documentId)) {
-
-            this.isBook = false;
-            return true;
-        }
-
-        return false;
-    }
-    // !------------------------------------------------------------------------------
-
     public boolean isStudent() {
         return isStudent;
     }
