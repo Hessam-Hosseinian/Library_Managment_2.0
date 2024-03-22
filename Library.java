@@ -36,24 +36,25 @@ public class Library {
 
     // }
 
-    public boolean checkManagerPermission(String id, String passwoed) {
+    // public boolean checkManagerPermission(String id, String passwoed) {
 
-        Manager targetManager = managers.get(id);
+    // Manager targetManager = managers.get(id);
 
-        if (targetManager != null && targetManager.getPassword().equals(passwoed)) {
-            return true;
+    // if (targetManager != null && targetManager.getPassword().equals(passwoed)) {
+    // return true;
 
-        } else if (targetManager == null) {
-            System.out.println("not-found");
+    // } else if (targetManager == null) {
+    // System.out.println("not-found");
 
-        } else if (targetManager != null && !targetManager.getPassword().equals(passwoed)) {
-            System.out.println("invalid-pass");
+    // } else if (targetManager != null &&
+    // !targetManager.getPassword().equals(passwoed)) {
+    // System.out.println("invalid-pass");
 
-        }
+    // }
 
-        return false;
+    // return false;
 
-    }
+    // }
 
     public void addBook(Book book) {
 
@@ -113,13 +114,13 @@ public class Library {
         this.address = address;
     }
 
-    public HashMap<String, Manager> getManagers() {
-        return this.managers;
-    }
+    // public HashMap<String, Manager> getManagers() {
+    // return this.managers;
+    // }
 
-    public void setManagers(HashMap<String, Manager> managers) {
-        this.managers = managers;
-    }
+    // public void setManagers(HashMap<String, Manager> managers) {
+    // this.managers = managers;
+    // }
 
     public Document getDocuments(String Id) {
         return documents.get(Id);

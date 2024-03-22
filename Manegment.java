@@ -188,7 +188,9 @@ public class Manegment {
 
             System.out.println("permission-denied");
 
-        } else if (targetUser != null && targetUser.getPassword().equals(passwoed)
+        }
+
+        else if (targetUser != null && targetUser.getPassword().equals(passwoed)
                 && !(targetUser instanceof Manager)) {
             System.out.println("permission-denied");
 
