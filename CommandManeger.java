@@ -106,7 +106,9 @@ public class CommandManeger {
 
         else if (command[0].equals("add-selling-book")) {
 
-            if (manegment.checkManagerPermission(command[1], command[2], command[10])) {
+            if (manegment.checkManagerPermission(command[1], command[2], command[12])) {
+                addSellingBook(command[3], command[4], command[5], command[6], command[7], Integer.valueOf(command[8]),
+                        Integer.valueOf(command[9]), Integer.valueOf(command[10]), command[11], command[12]);
 
             }
 

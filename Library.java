@@ -26,36 +26,9 @@ public class Library {
         this.deskNumber = deskNumber;
         this.address = address;
 
-        // this.managers = new HashMap<>();
         this.documents = new HashMap<>();
 
     }
-
-    // public void addManager(Manager manager) {
-
-    // managers.put(manager.getUserId(), manager);
-
-    // }
-
-    // public boolean checkManagerPermission(String id, String passwoed) {
-
-    // Manager targetManager = managers.get(id);
-
-    // if (targetManager != null && targetManager.getPassword().equals(passwoed)) {
-    // return true;
-
-    // } else if (targetManager == null) {
-    // System.out.println("not-found");
-
-    // } else if (targetManager != null &&
-    // !targetManager.getPassword().equals(passwoed)) {
-    // System.out.println("invalid-pass");
-
-    // }
-
-    // return false;
-
-    // }
 
     public void addBook(Book book) {
 

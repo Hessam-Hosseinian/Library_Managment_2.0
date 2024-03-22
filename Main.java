@@ -18,6 +18,7 @@ public class Main {
             }
 
             comandManeger.input(input);
+
         }
 
         scanner.close();
