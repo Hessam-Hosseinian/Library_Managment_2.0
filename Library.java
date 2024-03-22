@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class Library {
 
     private HashMap<String, ArrayList<Borrow>> borrows;
 
+    private HashMap<String, Read> reads;
+
     public Library(String libraryId, String libraryName, String foundationYear, int deskNumber, String address) {
         this.libraryId = libraryId;
         this.libraryName = libraryName;
@@ -34,6 +37,7 @@ public class Library {
 
         this.documents = new HashMap<>();
         this.borrows = new HashMap<>();
+        this.reads = new HashMap<>();
     }
 
     public boolean checkDocument(String docId) {
@@ -270,6 +274,67 @@ public class Library {
         }
         buyableBook.setAvailableCopyNumber();
         return true;
+
+    }
+
+    public boolean readBook(Read read) {
+        Document document = documents.get(read.getBookId());
+        if (document == null) {
+            System.out.println("4");
+            System.out.println("not-found");
+            return false;
+
+        }
+        if (!(document instanceof TreasureBook)) {
+
+            System.out.println("not-allowed");
+            return false;
+        }
+        // TreasureBook treasureBook = (TreasureBook) document;
+
+        for (Read read2 : reads.values()) {
+
+            if (read2.getBookId().equals(read.getBookId())
+                    && read2.getDate1().getTime() == read.getDate1().getTime() && conflict(read, read2)) {
+                System.out.println("not-allowed");
+                return false;
+            }
+
+        }
+
+        reads.put(read.getBookId(), read);
+
+        return true;
+
+    }
+
+    public boolean conflict(Read read1, Read read2) {
+
+        LocalTime t1 = LocalTime.parse(read1.getStartDate());
+        LocalTime t2 = LocalTime.parse(read1.getStartDate());
+        LocalTime t3 = LocalTime.parse(read2.getStartDate());
+        LocalTime t4 = LocalTime.parse(read2.getStartDate());
+        if (timeToMin(t1) <= timeToMin(t3) && timeToMin(t3) <= timeToMin2(t2)) {
+            return true;
+        }
+        if (timeToMin(t1) <= timeToMin2(t4) && timeToMin2(t4) <= timeToMin2(t2)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public long timeToMin(LocalTime time) {
+        long miiin;
+        miiin = time.getHour() * 60 + time.getMinute();
+        return miiin;
+
+    }
+
+    public long timeToMin2(LocalTime time) {
+        long miiin;
+        miiin = (time.getHour() + 2) * 60 + time.getMinute();
+        return miiin;
 
     }
 

@@ -26,6 +26,7 @@ public class Manegment {
         this.libraries = new HashMap<>();
         this.users = new HashMap<>();
         this.categories = new HashMap<>();
+
         Admin admin = new Admin("admin", "AdminPass", "-", "-", "-", "-", "-");
         users.put("admin", admin);
 
@@ -434,6 +435,40 @@ public class Manegment {
         }
 
         if (targetLibrary.buyBook(documentId)) {
+
+            return "success";
+        }
+        return "";
+
+    }
+    // !-------------------------------------------------------------------------------------------
+
+    public String read(Read read, String passwoed) {
+
+        User targetUser = users.get(read.getUserId());
+        if (targetUser == null) {
+            System.out.println("1");
+            return "not-found";
+        }
+        if (!targetUser.getPassword().equals(passwoed)) {
+            return "invalid-pass";
+        }
+        if (!(targetUser instanceof Professor)) {
+            return "permission-denied";
+
+        }
+        Library targetLibrary = libraries.get(read.getLibraryId());
+        if (targetLibrary == null) {
+            System.out.println("2");
+            return "not-found";
+        }
+
+        if (targetLibrary.checkDocument(read.getBookId())) {
+            System.out.println("3");
+            return "not-found";
+
+        }
+        if (targetLibrary.readBook(read)) {
 
             return "success";
         }

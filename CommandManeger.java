@@ -143,7 +143,7 @@ public class CommandManeger {
         }
 
         else if (input.contains("read")) {
-            read(command[1], command[2], command[3], command[4]);
+            read(command[1], command[2], command[3], command[4], command[5], command[6]);
         }
 
     }
@@ -292,10 +292,13 @@ public class CommandManeger {
     }
 
     // ?---------------------------------------------------------------------
-    public void read(String userId, String pass, String libraryId, String documentId, String strDate, String hour) {
-        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
+    public void read(String userId, String pass, String libraryId, String documentId, String strDate, String hour)
+            throws ParseException {
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+
         Date date = new Date(utilDate.getTime());
-        System.out.println(manegment.read(userId, pass, libraryId, documentId, date));
+        Read read = new Read(userId, libraryId, documentId, date, hour);
+        System.out.println(manegment.read(read, pass));
 
     }
 
