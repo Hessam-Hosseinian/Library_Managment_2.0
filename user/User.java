@@ -8,6 +8,7 @@ public class User {
     private String nationalId;
     private String birthDay;
     private String address;
+    private int debt;
 
     public User(String userId, String password, String firstName, String lastName, String nationalId, String birthDay,
             String address) {
@@ -18,6 +19,7 @@ public class User {
         this.nationalId = nationalId;
         this.birthDay = birthDay;
         this.address = address;
+        this.debt = 0;
     }
 
     public String getUserId() {
@@ -74,6 +76,18 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public int getDebt() {
+        return this.debt;
+    }
+
+    public void setDebt(int debt) {
+        this.debt = debt;
     }
 
 }

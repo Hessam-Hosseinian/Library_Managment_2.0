@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.xml.crypto.Data;
 
 import user.Manager;
 import doc.Book;
@@ -140,6 +143,62 @@ public class Library {
         }
 
         return false;
+    }
+
+    public Borrow checkUserBorrows(String userId, String docId) {
+        Borrow borrowHelp = null;
+        ArrayList<Borrow> hold = borrows.get(docId);
+        if (hold == null) {
+
+            return null;
+        }
+        for (Borrow borrow : hold) {
+            if (borrow.getUserId().equals(userId)) {
+
+                borrowHelp = borrow;
+
+                return borrowHelp;
+            }
+        }
+        return borrowHelp;
+    }
+
+    public int returning(Borrow borrow, java.util.Date date) {
+        ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
+        int debt = checkDebt(borrow, date);
+        borrows1.remove(borrow);
+        return debt;
+    }
+
+    public int checkDebt(Borrow borrow, Date date) {
+        long firstMin = (borrow.getDate().getTime() / 3600000); // getTime return time as millisecond
+        System.out.println(firstMin);
+        long secondMin = (((Date) date).getTime() / 3600000); // getTime return time as millisecond
+        System.out.println(secondMin);
+        long periodTime = secondMin - firstMin;
+        System.out.println(periodTime);
+        if (borrow.isStudent()) {
+            if (borrow.isBook()) {
+                if (periodTime < (10 * 24)) {
+                    return 0;
+                }
+                return (int) ((periodTime - (10 * 24)) * 50); // BOOK AND STUDENT
+            }
+            if (periodTime < (7 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (7 * 24)) * 50); // THESIS AND STUDENT
+        }
+        if (borrow.isBook()) {
+            if (periodTime < (14 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (14 * 24)) * 100); // BOOK AND STAFF
+        }
+        if (periodTime < (10 * 24)) {
+            return 0;
+        }
+        return (int) ((periodTime - (10 * 24)) * 100);// THESIS AND STAFF
     }
 
     public void addBook(Book book) {

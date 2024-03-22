@@ -365,47 +365,40 @@ public class Manegment {
     }
 
     // !-------------------------------------------------------------------------------------------
-    // public String returning2(Borrow borrow, String pass) {
-    // if (!borrow.checkUser(new HashSet<>(students.keySet()), new
-    // HashSet<>(staffs.keySet()))) {
-    // return "not-found"; // user not found
-    // }
-    // if (borrow.isStudent()) {
-    // Student student = students.get(borrow.getUserId());
-    // if (!student.getPassword().equals(pass)) {
-    // return "invalid-pass";// user is student and its pass is wrong
-    // }
+    public String returning(Borrow borrow, String password) {
+        User targetUser = users.get(borrow.getUserId());
 
-    // } else {
-    // Staff staff = staffs.get(borrow.getUserId());
-    // if (!staff.getPassword().equals(pass)) {
-    // return "invalid-pass";// user is staff and its pass is wrong
-    // }
-    // }
-    // Library library = libraries.get(borrow.getLibraryId());
-    // if (library == null) {
-    // return "not-found";// library not-found
-    // }
-    // if (!borrow.checkDoc(library.getBookIds(), library.getThesisIds())) {
-    // return "not-found";// there is no book or thesis whit this ID
-    // }
-    // Borrow borrowHelp = library.checkUserBorrows(borrow.getUserId(),
-    // borrow.getDocumentId());
-    // if (borrowHelp == null) {
-    // return "not-found"; // there is no borrow that we want to return it
-    // }
-    // int debt = library.returning(borrowHelp, borrow.getDate()); // calculate the
-    // debt
-    // if (debt == 0) {
-    // return "success";
-    // }
-    // if (borrow.isStudent()) {
-    // students.get(borrow.getUserId()).setDebt(debt);
-    // return "" + debt;// count debt
-    // }
-    // staffs.get(borrow.getUserId()).setDebt(debt);
-    // return "" + debt;// count debt
-    // }
+        if (targetUser == null) {
+            System.out.println("0");
+            return "not-found";
+        }
+        if (!targetUser.getPassword().equals(password)) {
+            return "invalid-pass";
+        }
+
+        Library targetLibrary = libraries.get(borrow.getLibraryId());
+
+        if (targetLibrary == null) {
+            System.out.println("1");
+            return "not-found";
+        }
+        if (targetLibrary.checkDocument(borrow.getDocumentId())) {
+            System.out.println("2");
+            return "not-found";
+        }
+        Borrow borrowHelp = targetLibrary.checkUserBorrows(borrow.getUserId(), borrow.getDocumentId());
+        if (borrowHelp == null) {
+            System.out.println("3");
+            return "not-found";
+        }
+        int debt = targetLibrary.returning(borrowHelp, borrow.getDate());
+        if (debt == 0) {
+            return "success";
+        }
+
+        targetUser.setDebt(debt);
+        return "" + debt;
+    }
     // !-------------------------------------------------------------------------------------------
 
     public void res() {

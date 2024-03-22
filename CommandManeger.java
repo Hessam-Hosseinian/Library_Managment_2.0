@@ -134,6 +134,10 @@ public class CommandManeger {
 
         }
 
+        else if (input.contains("return")) {
+            returning(command[1], command[2], command[3], command[4], command[5], command[6]);
+        }
+
     }
 
     // !--------------------------------------------------------------------------------------------------
@@ -261,6 +265,16 @@ public class CommandManeger {
 
         System.out.println(manegment.borrow(borrow, password));
 
+    }
+    // ?---------------------------------------------------------------------
+
+    public void returning(String userId, String pass, String libraryId, String docId, String strDate, String hour)
+            throws ParseException {
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
+
+        Date date = new Date(utilDate.getTime());
+        Borrow borrow = new Borrow(date, userId, docId, libraryId);
+        System.out.println(manegment.returning(borrow, pass));
     }
     // ?---------------------------------------------------------------------
 
