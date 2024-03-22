@@ -162,6 +162,7 @@ public class Manegment {
 
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
+
             System.out.println("not-found");
             return false;
 
@@ -170,11 +171,12 @@ public class Manegment {
         User targetUser = users.get(id);
 
         if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
-                && targetLibrary.getLibraryId().equals(libraryId)) {
+                && targetLibrary.getLibraryId().equals(targetUser.getUserId())) {
 
             return true;
         }
         if (targetUser == null) {
+
             System.out.println("not-found");
         }
 
@@ -184,7 +186,7 @@ public class Manegment {
         }
 
         else if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
-                && !(targetLibrary.getLibraryId().equals(libraryId))) {
+                && !(targetLibrary.getLibraryId().equals(targetUser.getUserId()))) {
 
             System.out.println("permission-denied");
 
@@ -205,7 +207,7 @@ public class Manegment {
         Library library = libraries.get(book.getLibraryId());
         if (library == null) {
 
-            return "not-found"; //
+            return "not-found";
         }
         Category category = categories.get(book.getCategoryId());
         if (category == null) {
