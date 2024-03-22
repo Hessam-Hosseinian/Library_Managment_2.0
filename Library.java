@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import user.Manager;
@@ -19,6 +20,8 @@ public class Library {
 
     private HashMap<String, Document> documents;
 
+    private HashMap<String, ArrayList<Borrow>> borrows;
+
     public Library(String libraryId, String libraryName, String foundationYear, int deskNumber, String address) {
         this.libraryId = libraryId;
         this.libraryName = libraryName;
@@ -27,7 +30,76 @@ public class Library {
         this.address = address;
 
         this.documents = new HashMap<>();
+        this.borrows = new HashMap<>();
+    }
 
+    public boolean checkDocument(String docId) {
+
+        if (documents.get(docId) == null) {
+            return true;
+
+        }
+        return false;
+
+    }
+
+    public int countBorrows(String userId) {
+        int count = 0;
+        for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
+            for (Borrow borrow : docBorrows) {
+                if (borrow.getUserId().equals(userId)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int countDocs(String docId) {
+        ArrayList<Borrow> myBorrow = borrows.get(docId);
+        if (myBorrow == null) {
+            return 0;
+        }
+        return myBorrow.size();
+    }
+
+    public boolean borrow(Borrow borrow, int userBorrow) {
+        if (borrow.isStudent()) {
+            if (userBorrow < 3) {
+                if (isAllowed(borrow)) {
+                    return true;
+                }
+            }
+        } else {
+            if (userBorrow < 5) {
+                if (isAllowed(borrow)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isAllowed(Borrow borrow) {
+        ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
+        if (borrows1 == null) {
+            borrows1 = new ArrayList<>();
+
+        }
+        if (borrow.isBook()) {
+            if (countDocs(borrow.getDocumentId()) < documents.get(borrow.getDocumentId()).getCopyNumber()) {
+                borrows1.add(borrow);
+                borrows.put(borrow.getDocumentId(), borrows1);
+                return true;
+            }
+            return false;
+        }
+        if (countDocs(borrow.getDocumentId()) == 0) {
+            borrows1.add(borrow);
+            borrows.put(borrow.getDocumentId(), borrows1);
+            return true;
+        }
+        return false;
     }
 
     public void addBook(Book book) {

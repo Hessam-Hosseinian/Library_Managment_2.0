@@ -3,6 +3,10 @@ import user.Staff;
 import user.Student;
 import user.Manager;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import doc.Book;
 import doc.BuyableBook;
 import doc.Thesis;
@@ -12,7 +16,7 @@ public class CommandManeger {
 
     Manegment manegment = new Manegment();
 
-    public void input(String input) {
+    public void input(String input) throws ParseException {
 
         String[] command = input.split("[#|]");
 
@@ -121,6 +125,12 @@ public class CommandManeger {
                 removeResource(command[3], command[4]);
 
             }
+
+        }
+
+        else if (command[0].equals("borrow")) {
+
+            borrow(command[1], command[2], command[3], command[4], command[5], command[6]);
 
         }
 
@@ -237,6 +247,20 @@ public class CommandManeger {
     public void removeResource(String id, String libraryId) {
 
         System.out.println(manegment.removeResource(id, libraryId));
+    }
+    // ?---------------------------------------------------------------------
+
+    public void borrow(String userId, String password, String libraryId, String docId, String strDate, String hour)
+            throws ParseException {
+
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
+
+        Date date = new Date(utilDate.getTime());
+
+        Borrow borrow = new Borrow(date, userId, docId, libraryId);
+
+        System.out.println(manegment.borrow(borrow, password));
+
     }
     // ?---------------------------------------------------------------------
 

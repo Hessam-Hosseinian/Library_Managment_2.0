@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.HashSet;
 
 import doc.Book;
 import doc.BuyableBook;
@@ -294,6 +295,96 @@ public class Manegment {
         return "success";
     }
 
+    // !-------------------------------------------------------------------------------------------
+    public String borrow(Borrow borrow, String password) {
+        User targetUser = users.get(borrow.getUserId());
+
+        if (targetUser == null) {
+            return "not-found";
+        }
+        if (!targetUser.getPassword().equals(password)) {
+            return "invalid-pass";
+        }
+        if (targetUser instanceof Student) {
+            borrow.setIsStudent(true);
+            borrow.setIsProfessor(false);
+
+        } else {
+            if (targetUser instanceof Professor) {
+
+                borrow.setIsStudent(false);
+                borrow.setIsProfessor(true);
+            } else {
+                borrow.setIsStudent(false);
+                borrow.setIsProfessor(false);
+
+            }
+
+        }
+
+        Library targetLibrary = libraries.get(borrow.getLibraryId());
+        if (targetLibrary == null) {
+            return "not-found";
+        }
+        if (targetLibrary.checkDocument(borrow.getDocumentId())) {
+            return "not-found";
+        }
+        if (!targetLibrary.borrow(borrow, countBorrow(borrow.getUserId()))) {
+            return "not-allowed";
+        }
+        return "success";
+    }
+
+    public int countBorrow(String userId) {
+        int borrowed = 0;
+        for (Library library : libraries.values()) {
+            borrowed += library.countBorrows(userId);
+        }
+        return borrowed;
+    }
+
+    // !-------------------------------------------------------------------------------------------
+    // public String returning2(Borrow borrow, String pass) {
+    // if (!borrow.checkUser(new HashSet<>(students.keySet()), new
+    // HashSet<>(staffs.keySet()))) {
+    // return "not-found"; // user not found
+    // }
+    // if (borrow.isStudent()) {
+    // Student student = students.get(borrow.getUserId());
+    // if (!student.getPassword().equals(pass)) {
+    // return "invalid-pass";// user is student and its pass is wrong
+    // }
+
+    // } else {
+    // Staff staff = staffs.get(borrow.getUserId());
+    // if (!staff.getPassword().equals(pass)) {
+    // return "invalid-pass";// user is staff and its pass is wrong
+    // }
+    // }
+    // Library library = libraries.get(borrow.getLibraryId());
+    // if (library == null) {
+    // return "not-found";// library not-found
+    // }
+    // if (!borrow.checkDoc(library.getBookIds(), library.getThesisIds())) {
+    // return "not-found";// there is no book or thesis whit this ID
+    // }
+    // Borrow borrowHelp = library.checkUserBorrows(borrow.getUserId(),
+    // borrow.getDocumentId());
+    // if (borrowHelp == null) {
+    // return "not-found"; // there is no borrow that we want to return it
+    // }
+    // int debt = library.returning(borrowHelp, borrow.getDate()); // calculate the
+    // debt
+    // if (debt == 0) {
+    // return "success";
+    // }
+    // if (borrow.isStudent()) {
+    // students.get(borrow.getUserId()).setDebt(debt);
+    // return "" + debt;// count debt
+    // }
+    // staffs.get(borrow.getUserId()).setDebt(debt);
+    // return "" + debt;// count debt
+    // }
     // !-------------------------------------------------------------------------------------------
 
     public void res() {

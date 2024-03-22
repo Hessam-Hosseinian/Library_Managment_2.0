@@ -2,6 +2,8 @@ import java.util.Date;
 import java.util.HashSet;
 //?----------------------------------------------------------------------------------------------------------------------
 
+import user.User;
+
 public class Borrow {
 
     private Date date;
@@ -10,6 +12,8 @@ public class Borrow {
     private String documentId;
     private String libraryId;
     private boolean isStudent;
+    private boolean isProfessor;
+
     private boolean isBook;
 
     public Borrow(Date date, String userId, String documentId, String libraryId) {
@@ -21,23 +25,24 @@ public class Borrow {
     // ------------------------------------------------------------------------------------------------------------------
     // !------------------------------------------------------------------------------
 
-    public boolean checkUser(HashSet<String> studentIds, HashSet<String> staffIds) {
-        if (studentIds.contains(userId)) {
+    // public boolean checkUser(HashSet<String> usersIds) {
+    // User targetUser =
+    // if (studentIds.contains(userId)) {
 
-            this.isStudent = true;
-            return true;
+    // this.isStudent = true;
+    // return true;
 
-        }
+    // }
 
-        else if (staffIds.contains(userId)) {
+    // else if (staffIds.contains(userId)) {
 
-            this.isStudent = false;
-            return true;
+    // this.isStudent = false;
+    // return true;
 
-        }
+    // }
 
-        return false;
-    }
+    // return false;
+    // }
 
     // !------------------------------------------------------------------------------
 
@@ -124,6 +129,18 @@ public class Borrow {
 
     public void setIsBook(boolean isBook) {
         this.isBook = isBook;
+    }
+
+    public boolean isIsProfessor() {
+        return this.isProfessor;
+    }
+
+    public boolean getIsProfessor() {
+        return this.isProfessor;
+    }
+
+    public void setIsProfessor(boolean isProfessor) {
+        this.isProfessor = isProfessor;
     }
     // ----------------------------------- Seters and Geters
 
