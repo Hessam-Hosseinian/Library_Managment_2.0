@@ -343,6 +343,14 @@ public class Manegment {
             }
 
         }
+        for (Library library : libraries.values()) {
+            if (library.checkdebtFor(borrow.getDate())) {
+
+                return "not-allowed";
+
+            }
+
+        }
         if (targetLibrary.checkAvailabilityBorrow(borrow.getDocumentId())) {
 
             return "not-allowed";
@@ -379,16 +387,16 @@ public class Manegment {
         Library targetLibrary = libraries.get(borrow.getLibraryId());
 
         if (targetLibrary == null) {
-            System.out.println("1");
+
             return "not-found";
         }
         if (targetLibrary.checkDocument(borrow.getDocumentId())) {
-            System.out.println("2");
+
             return "not-found";
         }
         Borrow borrowHelp = targetLibrary.checkUserBorrows(borrow.getUserId(), borrow.getDocumentId());
         if (borrowHelp == null) {
-            System.out.println("3");
+
             return "not-found";
         }
         int debt = targetLibrary.returning(borrowHelp, borrow.getDate());
@@ -398,6 +406,39 @@ public class Manegment {
 
         targetUser.setDebt(debt);
         return "" + debt;
+    }
+    // !-------------------------------------------------------------------------------------------
+
+    public String buy(String userId, String pass, String libraryId, String documentId) {
+
+        User targetUser = users.get(userId);
+        if (targetUser == null) {
+
+            return "not-found";
+        }
+        if (!targetUser.getPassword().equals(pass)) {
+            return "invalid-pass";
+        }
+        if ((targetUser instanceof Manager)) {
+            return "permission-denied";
+
+        }
+        Library targetLibrary = libraries.get(libraryId);
+        if (targetLibrary == null) {
+            return "not-found";
+        }
+
+        if (targetLibrary.checkDocument(documentId)) {
+            return "not-found";
+
+        }
+
+        if (targetLibrary.buyBook(documentId)) {
+
+            return "success";
+        }
+        return "";
+
     }
     // !-------------------------------------------------------------------------------------------
 

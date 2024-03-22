@@ -138,6 +138,14 @@ public class CommandManeger {
             returning(command[1], command[2], command[3], command[4], command[5], command[6]);
         }
 
+        else if (input.contains("buy")) {
+            buy(command[1], command[2], command[3], command[4]);
+        }
+
+        else if (input.contains("read")) {
+            read(command[1], command[2], command[3], command[4]);
+        }
+
     }
 
     // !--------------------------------------------------------------------------------------------------
@@ -277,6 +285,19 @@ public class CommandManeger {
         System.out.println(manegment.returning(borrow, pass));
     }
     // ?---------------------------------------------------------------------
+
+    public void buy(String userId, String pass, String libraryId, String documentId) {
+        System.out.println(manegment.buy(userId, pass, libraryId, documentId));
+
+    }
+
+    // ?---------------------------------------------------------------------
+    public void read(String userId, String pass, String libraryId, String documentId, String strDate, String hour) {
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
+        Date date = new Date(utilDate.getTime());
+        System.out.println(manegment.read(userId, pass, libraryId, documentId, date));
+
+    }
 
     public void res() {
         manegment.res();

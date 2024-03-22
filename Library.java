@@ -170,13 +170,26 @@ public class Library {
         return debt;
     }
 
+    public Boolean checkdebtFor(Date date) {
+        for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
+            for (Borrow borrow : docBorrows) {
+                if (checkDebt(borrow, date) != 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     public int checkDebt(Borrow borrow, Date date) {
-        long firstMin = (borrow.getDate().getTime() / 3600000); // getTime return time as millisecond
-        System.out.println(firstMin);
-        long secondMin = (((Date) date).getTime() / 3600000); // getTime return time as millisecond
-        System.out.println(secondMin);
+
+        long firstMin = borrow.getDate().getTime() / 3600000; // getTime return time as millisecond
+
+        long secondMin = ((Date) date).getTime() / 3600000; // getTime return time as millisecond
+
         long periodTime = secondMin - firstMin;
-        System.out.println(periodTime);
+
         if (borrow.isStudent()) {
             if (borrow.isBook()) {
                 if (periodTime < (10 * 24)) {
@@ -233,6 +246,30 @@ public class Library {
             return true;
         }
         return false;
+
+    }
+
+    public boolean buyBook(String documentID) {
+        Document document = documents.get(documentID);
+        if (document == null) {
+            System.out.println("not-found");
+            return false;
+
+        }
+        if (!(document instanceof BuyableBook)) {
+
+            System.out.println("not-allowed");
+            return false;
+        }
+        BuyableBook buyableBook = (BuyableBook) document;
+
+        if (buyableBook.getAvailableCopyNumber() == 0) {
+
+            System.out.println("not-allowed");
+            return false;
+        }
+        buyableBook.setAvailableCopyNumber();
+        return true;
 
     }
 
