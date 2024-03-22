@@ -345,7 +345,7 @@ public class Manegment {
 
         }
         for (Library library : libraries.values()) {
-            if (library.checkdebtFor(borrow.getDate())) {
+            if (library.checkdebtFor(borrow.getUserId(), borrow.getDate())) {
 
                 return "not-allowed";
 
@@ -378,7 +378,7 @@ public class Manegment {
         User targetUser = users.get(borrow.getUserId());
 
         if (targetUser == null) {
-            System.out.println("0");
+
             return "not-found";
         }
         if (!targetUser.getPassword().equals(password)) {
@@ -410,69 +410,81 @@ public class Manegment {
     }
     // !-------------------------------------------------------------------------------------------
 
-    public String buy(String userId, String pass, String libraryId, String documentId) {
+    public void buy(String userId, String pass, String libraryId, String documentId) {
 
         User targetUser = users.get(userId);
         if (targetUser == null) {
 
-            return "not-found";
+            System.out.println("not-found");
+            return;
         }
         if (!targetUser.getPassword().equals(pass)) {
-            return "invalid-pass";
+
+            System.out.println("invalid-pass");
+            return;
         }
         if ((targetUser instanceof Manager)) {
-            return "permission-denied";
+            System.out.println("permission-denied");
+            return;
 
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
-            return "not-found";
+            System.out.println("not-found");
+            return;
         }
 
         if (targetLibrary.checkDocument(documentId)) {
-            return "not-found";
+            System.out.println("not-found");
+            return;
 
         }
 
         if (targetLibrary.buyBook(documentId)) {
-
-            return "success";
+            System.out.println("success");
+            return;
         }
-        return "";
+        return;
 
     }
     // !-------------------------------------------------------------------------------------------
 
-    public String read(Read read, String passwoed) {
+    public void read(Read read, String passwoed) {
 
         User targetUser = users.get(read.getUserId());
         if (targetUser == null) {
-            System.out.println("1");
-            return "not-found";
+            System.out.println("not-found");
+            return;
         }
         if (!targetUser.getPassword().equals(passwoed)) {
-            return "invalid-pass";
+            System.out.println("invalid-pass");
+            return;
         }
         if (!(targetUser instanceof Professor)) {
-            return "permission-denied";
+
+            System.out.println("permission-denied");
+            return;
 
         }
         Library targetLibrary = libraries.get(read.getLibraryId());
         if (targetLibrary == null) {
-            System.out.println("2");
-            return "not-found";
+
+            System.out.println("not-found");
+            return;
         }
 
         if (targetLibrary.checkDocument(read.getBookId())) {
-            System.out.println("3");
-            return "not-found";
+
+            System.out.println("not-found");
+            return;
 
         }
         if (targetLibrary.readBook(read)) {
 
-            return "success";
+            System.out.println("success");
+            return;
         }
-        return "";
+        return;
 
     }
     // !-------------------------------------------------------------------------------------------

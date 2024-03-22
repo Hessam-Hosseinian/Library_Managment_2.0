@@ -174,10 +174,10 @@ public class Library {
         return debt;
     }
 
-    public Boolean checkdebtFor(Date date) {
+    public Boolean checkdebtFor(String userId, Date date) {
         for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
             for (Borrow borrow : docBorrows) {
-                if (checkDebt(borrow, date) != 0) {
+                if (checkDebt(borrow, date) != 0 && borrow.getUserId().equals(userId)) {
                     return true;
                 }
             }
@@ -280,7 +280,7 @@ public class Library {
     public boolean readBook(Read read) {
         Document document = documents.get(read.getBookId());
         if (document == null) {
-            System.out.println("4");
+
             System.out.println("not-found");
             return false;
 

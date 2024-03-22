@@ -287,7 +287,7 @@ public class CommandManeger {
     // ?---------------------------------------------------------------------
 
     public void buy(String userId, String pass, String libraryId, String documentId) {
-        System.out.println(manegment.buy(userId, pass, libraryId, documentId));
+        manegment.buy(userId, pass, libraryId, documentId);
 
     }
 
@@ -298,7 +298,7 @@ public class CommandManeger {
 
         Date date = new Date(utilDate.getTime());
         Read read = new Read(userId, libraryId, documentId, date, hour);
-        System.out.println(manegment.read(read, pass));
+        manegment.read(read, pass);
 
     }
 
