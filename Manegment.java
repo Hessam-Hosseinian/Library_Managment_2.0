@@ -170,12 +170,22 @@ public class Manegment {
         }
 
         User targetUser = users.get(id);
-        Manager targetManager = (Manager) targetUser;
 
-        if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
-                && targetLibrary.getLibraryId().equals(targetManager.getLibraryId())) {
+        if (targetUser instanceof Manager) {
+            Manager targetManager = (Manager) targetUser;
 
-            return true;
+            if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
+                    && targetLibrary.getLibraryId().equals(targetManager.getLibraryId())) {
+
+                return true;
+            }
+
+            else if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
+                    && !(targetLibrary.getLibraryId().equals(targetManager.getLibraryId()))) {
+
+                System.out.println("permission-denied");
+
+            }
         }
         if (targetUser == null) {
 
@@ -184,13 +194,6 @@ public class Manegment {
 
         else if (targetUser != null && !targetUser.getPassword().equals(passwoed)) {
             System.out.println("invalid-pass");
-
-        }
-
-        else if (targetUser != null && targetUser.getPassword().equals(passwoed) && targetUser instanceof Manager
-                && !(targetLibrary.getLibraryId().equals(targetManager.getLibraryId()))) {
-
-            System.out.println("permission-denied");
 
         }
 
