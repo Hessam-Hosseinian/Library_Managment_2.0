@@ -277,6 +277,22 @@ public class Manegment {
     }
     // !-------------------------------------------------------------------------------------------
 
+    public String removeResource(String docId, String libraryId) {
+
+        Library targetLibrary = libraries.get(libraryId);
+        if (targetLibrary == null) {
+            return "not-found";
+
+        }
+        if (!targetLibrary.removeResource(docId)) {
+            return "not-found";
+        }
+
+        return "success";
+    }
+
+    // !-------------------------------------------------------------------------------------------
+
     public void res() {
 
         System.out.println(libraries.size() + " libraries");

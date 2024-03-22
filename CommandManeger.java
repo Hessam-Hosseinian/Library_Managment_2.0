@@ -92,7 +92,7 @@ public class CommandManeger {
 
         }
 
-        else if (command[0].equals("add-ganjinehbook")) {
+        else if (command[0].equals("add-ganjineh-book")) {
 
             if (manegment.checkManagerPermission(command[1], command[2], command[10])) {
 
@@ -109,6 +109,16 @@ public class CommandManeger {
             if (manegment.checkManagerPermission(command[1], command[2], command[12])) {
                 addSellingBook(command[3], command[4], command[5], command[6], command[7], Integer.valueOf(command[8]),
                         Integer.valueOf(command[9]), Integer.valueOf(command[10]), command[11], command[12]);
+
+            }
+
+        }
+
+        else if (command[0].equals("remove-resource")) {
+
+            if (manegment.checkManagerPermission(command[1], command[2], command[4])) {
+
+                removeResource(command[3], command[4]);
 
             }
 
@@ -222,6 +232,12 @@ public class CommandManeger {
         System.out.println(manegment.addSellingBook(buyableBook));
     }
 
+    // ?---------------------------------------------------------------------
+
+    public void removeResource(String id, String libraryId) {
+
+        System.out.println(manegment.removeResource(id, libraryId));
+    }
     // ?---------------------------------------------------------------------
 
     public void res() {

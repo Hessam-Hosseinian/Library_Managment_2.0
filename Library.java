@@ -54,6 +54,17 @@ public class Library {
 
     }
 
+    public Boolean removeResource(String docId) {
+
+        if (documents.get(docId) != null) {
+
+            documents.remove(docId);
+            return true;
+        }
+        return false;
+
+    }
+
     public String getLibraryId() {
         return this.libraryId;
     }
