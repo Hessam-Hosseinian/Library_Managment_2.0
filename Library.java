@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 import user.Manager;
 import doc.Book;
+import doc.BuyableBook;
 import doc.Document;
 import doc.Thesis;
 import doc.TreasureBook;
@@ -71,6 +72,12 @@ public class Library {
     public void addTreasureBook(TreasureBook treasureBook) {
 
         documents.put(treasureBook.getDocId(), treasureBook);
+
+    }
+
+    public void addSellingBook(BuyableBook buyableBook) {
+
+        documents.put(buyableBook.getDocId(), buyableBook);
 
     }
 

@@ -4,6 +4,7 @@ import user.Student;
 import user.Manager;
 
 import doc.Book;
+import doc.BuyableBook;
 import doc.Thesis;
 import doc.TreasureBook;
 
@@ -98,6 +99,14 @@ public class CommandManeger {
                 addTreasureBook(command[3], command[4], command[5], command[6], command[7],
                         command[8], command[9],
                         command[10]);
+
+            }
+
+        }
+
+        else if (command[0].equals("add-selling-book")) {
+
+            if (manegment.checkManagerPermission(command[1], command[2], command[10])) {
 
             }
 
@@ -199,6 +208,16 @@ public class CommandManeger {
                 donor, categoryId, libraryId);
 
         System.out.println(manegment.addTreasureBook(treasureBook));
+    }
+    // ?---------------------------------------------------------------------
+
+    public void addSellingBook(String id, String name, String authorName, String publisher, String year, int numBook,
+            String categoryId, String libraryId) {
+
+        BuyableBook buyableBook = new BuyableBook(id, name, authorName, publisher, year, numBook,
+                categoryId, libraryId);
+
+        System.out.println(manegment.addSellingBook(buyableBook));
     }
 
     // ?---------------------------------------------------------------------

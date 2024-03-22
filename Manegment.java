@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 import doc.Book;
+import doc.BuyableBook;
 import doc.Document;
 import doc.Thesis;
 import doc.TreasureBook;
@@ -253,6 +254,23 @@ public class Manegment {
             return "duplicate-id";
         }
         library.addTreasureBook(treasureBook);
+        return "success";
+    }
+    // !-------------------------------------------------------------------------------------------
+
+    public String addSellingBook(BuyableBook buyableBook) {
+        Library library = libraries.get(buyableBook.getLibraryId());
+        if (library == null) {
+            return "not-found";
+        }
+        Category category = categories.get(buyableBook.getCategoryId());
+        if (category == null) {
+            return "not-found";
+        }
+        if (library.getDocuments(buyableBook.getDocId()) != null) {
+            return "duplicate-id";
+        }
+        library.addSellingBook(buyableBook);
         return "success";
     }
     // !-------------------------------------------------------------------------------------------
