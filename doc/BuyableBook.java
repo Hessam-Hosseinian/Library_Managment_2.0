@@ -1,10 +1,15 @@
 package doc;
+
 public class BuyableBook extends Document {
 
     public BuyableBook(String docId, String title, String author, String publisher, String publicationYear,
-            int copyNumber, String categoryId, String libraryId) {
+            int copyNumber, int price, int discountAmount, String categoryId, String libraryId) {
         super(docId, title, author, publisher, publicationYear, copyNumber, categoryId, libraryId);
-        //TODO Auto-generated constructor stub
+        this.price = price;
+        this.discountAmount = discountAmount;
     }
+
+    private int price;
+    private int discountAmount;
 
 }

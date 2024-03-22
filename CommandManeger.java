@@ -212,10 +212,10 @@ public class CommandManeger {
     // ?---------------------------------------------------------------------
 
     public void addSellingBook(String id, String name, String authorName, String publisher, String year, int numBook,
-            String categoryId, String libraryId) {
+            int price, int discountAmount, String categoryId, String libraryId) {
 
         BuyableBook buyableBook = new BuyableBook(id, name, authorName, publisher, year, numBook,
-                categoryId, libraryId);
+                price, discountAmount, categoryId, libraryId);
 
         System.out.println(manegment.addSellingBook(buyableBook));
     }
