@@ -294,10 +294,11 @@ public class CommandManeger {
     // ?---------------------------------------------------------------------
     public void read(String userId, String pass, String libraryId, String documentId, String strDate, String hour)
             throws ParseException {
-        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
 
         Date date = new Date(utilDate.getTime());
-        Read read = new Read(userId, libraryId, documentId, date, hour);
+        System.out.println(date);
+        Read read = new Read(userId, libraryId, documentId, date);
         manegment.read(read, pass);
 
     }

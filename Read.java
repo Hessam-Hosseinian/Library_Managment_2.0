@@ -7,15 +7,14 @@ public class Read {
     private String bookId;
 
     private Date date1;
-    private String startDate;
+    // private String startDate;
     // private String endDate;
 
-    public Read(String userId, String libraryId, String bookId, Date date1, String startDate) {
+    public Read(String userId, String libraryId, String bookId, Date date1) {
         this.userId = userId;
         this.libraryId = libraryId;
         this.bookId = bookId;
         this.date1 = date1;
-        this.startDate = startDate;
 
     }
 
@@ -49,14 +48,6 @@ public class Read {
 
     public void setDate1(Date date1) {
         this.date1 = date1;
-    }
-
-    public String getStartDate() {
-        return this.startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
     }
 
 }

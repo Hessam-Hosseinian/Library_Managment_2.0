@@ -111,6 +111,7 @@ public class Manegment {
     // !-------------------------------------------------------------------------------------------
 
     public String addStaff(Staff staff) {
+
         if (users.get(staff.getUserId()) != null) {
             return "duplicate-id";
 
@@ -153,10 +154,23 @@ public class Manegment {
     // !-------------------------------------------------------------------------------------------
 
     public String removeUser(String userId) {
-        if (users.get(userId) == null) {
+        User targeUser = users.get(userId);
+        if (targeUser == null) {
             return "not-found";
 
         }
+        if (targeUser.getDebt() != 0) {
+            return "not-allowed";
+
+        }
+
+        for (Library library : libraries.values()) {
+
+            if (library.countBorrows(userId) != 0) {
+                return "not-allowed";
+            }
+        }
+
         users.remove(userId);
         return "success";
 
@@ -294,6 +308,11 @@ public class Manegment {
         if (!targetLibrary.removeResource(docId)) {
             return "not-found";
         }
+        if (targetLibrary.checkBorrowed(docId)) {
+
+            return "not-allowed";
+        }
+        // System.out.println(targetLibrary.checkBorrowed(docId));
 
         return "success";
     }
@@ -375,7 +394,9 @@ public class Manegment {
 
         }
         int hold = library.returning(borrow, document, user);
-
+        if (hold < 0) {
+            return "not-found";
+        }
         if (hold > 0) {
             return "" + hold;
         }
@@ -401,20 +422,19 @@ public class Manegment {
             return;
 
         }
-        if (targetUser.getDebt() != 0) {
-            System.out.println("not-allowed");
-            return;
-        }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
             System.out.println("not-found");
             return;
         }
-
         if (targetLibrary.checkDocument(documentId)) {
             System.out.println("not-found");
             return;
 
+        }
+        if (targetUser.getDebt() != 0) {
+            System.out.println("not-allowed");
+            return;
         }
 
         if (targetLibrary.buyBook(documentId)) {
@@ -444,6 +464,7 @@ public class Manegment {
 
         }
         if (targetUser.getDebt() != 0) {
+
             System.out.println("not-allowed");
             return;
         }

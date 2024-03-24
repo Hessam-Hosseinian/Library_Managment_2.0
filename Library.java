@@ -189,6 +189,17 @@ public class Library {
 
     }
 
+    public boolean checkBorrowed(String docId) {
+        ArrayList<Borrow> borrows = this.borrows.get(docId);
+        if (borrows == null || borrows.size() == 0) {
+            return false;
+
+        }
+
+        return true;
+
+    }
+
     public int returning(Borrow borrow, Document document, User user) {
         ArrayList<Borrow> borrows = this.borrows.get(borrow.getDocumentId());
         Borrow itsBorrow = null;
@@ -237,14 +248,14 @@ public class Library {
             System.out.println("not-allowed");
             return false;
         }
-        BuyableBook buyableBook = (BuyableBook) document;
+        // BuyableBook buyableBook = (BuyableBook) document;
 
-        if (buyableBook.getAvailableCopyNumber() == 0) {
+        if (document.getAvailableCopyNumber() == 0) {
 
             System.out.println("not-allowed");
             return false;
         }
-        buyableBook.setAvailableCopyNumber();
+        document.decreaseAvailableCopyNumber();
         return true;
 
     }
@@ -262,12 +273,12 @@ public class Library {
             System.out.println("not-allowed");
             return false;
         }
-        // TreasureBook treasureBook = (TreasureBook) document;
 
         for (Read read2 : reads.values()) {
 
             if (read2.getBookId().equals(read.getBookId())
-                    && read2.getDate1().getTime() == read.getDate1().getTime() && conflict(read, read2)) {
+                    && !conflict(read, read2)) {
+
                 System.out.println("not-allowed");
                 return false;
             }
@@ -281,33 +292,20 @@ public class Library {
     }
 
     public boolean conflict(Read read1, Read read2) {
+        Date dateHold = read1.getDate1();
+        Date dateHold2 = read2.getDate1();
 
-        LocalTime t1 = LocalTime.parse(read1.getStartDate());
-        LocalTime t2 = LocalTime.parse(read1.getStartDate());
-        LocalTime t3 = LocalTime.parse(read2.getStartDate());
-        LocalTime t4 = LocalTime.parse(read2.getStartDate());
-        if (timeToMin(t1) <= timeToMin(t3) && timeToMin(t3) <= timeToMin2(t2)) {
+        if (dateHold == null || dateHold2 == null) {
+
             return true;
         }
-        if (timeToMin(t1) <= timeToMin2(t4) && timeToMin2(t4) <= timeToMin2(t2)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public long timeToMin(LocalTime time) {
-        long miiin;
-        miiin = time.getHour() * 60 + time.getMinute();
-        return miiin;
-
-    }
-
-    public long timeToMin2(LocalTime time) {
-        long miiin;
-        miiin = (time.getHour() + 2) * 60 + time.getMinute();
-        return miiin;
-
+        long firstTime = dateHold.getTime() / 3600000;
+        // System.out.println(firstTime);
+        long secondTime = dateHold2.getTime() / 3600000;
+        // System.out.println(secondTime);
+        long periodTime = secondTime - firstTime;
+        // System.out.println(periodTime);
+        return Math.abs(periodTime) >= 2;
     }
 
     public String getLibraryId() {
