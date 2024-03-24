@@ -1,3 +1,5 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -298,71 +300,39 @@ public class Manegment {
 
     // !-------------------------------------------------------------------------------------------
     public String borrow(Borrow borrow, String password) {
-        User targetUser = users.get(borrow.getUserId());
 
-        if (targetUser == null) {
+        User user = users.get(borrow.getUserId());
+        if (user == null) {
             return "not-found";
+
         }
-        if (!targetUser.getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             return "invalid-pass";
-        }
-        if (targetUser instanceof Student) {
-            borrow.setIsStudent(true);
-            borrow.setIsProfessor(false);
-
-        } else {
-            if (targetUser instanceof Professor) {
-
-                borrow.setIsStudent(false);
-                borrow.setIsProfessor(true);
-            } else {
-                borrow.setIsStudent(false);
-                borrow.setIsProfessor(false);
-
-            }
 
         }
-
-        Library targetLibrary = libraries.get(borrow.getLibraryId());
-
-        if (targetLibrary == null) {
+        Library library = libraries.get(borrow.getLibraryId());
+        if (library == null) {
             return "not-found";
+
         }
-        if (targetLibrary.isIsBook(borrow.getDocumentId())) {
-            borrow.setIsBook(true);
-        } else {
-            borrow.setIsBook(false);
-        }
-        if (targetLibrary.checkDocument(borrow.getDocumentId())) {
+        Document document = library.getDocuments(borrow.getDocumentId());
+        if (document == null) {
             return "not-found";
-        }
-        for (Library library : libraries.values()) {
-            if (library.checkdoublacheck(borrow.getUserId(), borrow.getDocumentId())) {
-
-                return "not-allowed";
-
-            }
 
         }
-        for (Library library : libraries.values()) {
-            if (library.checkdebtFor(borrow.getUserId(), borrow.getDate())) {
-
-                return "not-allowed";
-
-            }
-
+        if (user.getDebt() != 0) {
+            return "not-allowed";
         }
-        if (targetLibrary.checkAvailabilityBorrow(borrow.getDocumentId())) {
+        if (checkDelay(borrow, document, user)) {
 
             return "not-allowed";
         }
-
-        if (!targetLibrary.borrow(borrow, countBorrow(borrow.getUserId()))) {
+        if (!library.borrow(borrow, countBorrow(borrow.getUserId()), user, document)) {
 
             return "not-allowed";
         }
-
         return "success";
+
     }
 
     public int countBorrow(String userId) {
@@ -373,40 +343,43 @@ public class Manegment {
         return borrowed;
     }
 
+    private boolean checkDelay(Borrow borrow, Document document, User user) {
+        for (Library library : libraries.values()) {
+            if (library.hasDelay(borrow, document, user, borrow.getUserId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // !-------------------------------------------------------------------------------------------
     public String returning(Borrow borrow, String password) {
-        User targetUser = users.get(borrow.getUserId());
 
-        if (targetUser == null) {
-
+        User user = users.get(borrow.getUserId());
+        if (user == null) {
             return "not-found";
+
         }
-        if (!targetUser.getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             return "invalid-pass";
+
         }
-
-        Library targetLibrary = libraries.get(borrow.getLibraryId());
-
-        if (targetLibrary == null) {
-
+        Library library = libraries.get(borrow.getLibraryId());
+        if (library == null) {
             return "not-found";
-        }
-        if (targetLibrary.checkDocument(borrow.getDocumentId())) {
 
+        }
+        Document document = library.getDocuments(borrow.getDocumentId());
+        if (document == null) {
             return "not-found";
-        }
-        Borrow borrowHelp = targetLibrary.checkUserBorrows(borrow.getUserId(), borrow.getDocumentId());
-        if (borrowHelp == null) {
 
-            return "not-found";
         }
-        int debt = targetLibrary.returning(borrowHelp, borrow.getDate());
-        if (debt == 0) {
-            return "success";
-        }
+        int hold = library.returning(borrow, document, user);
 
-        targetUser.setDebt(debt);
-        return "" + debt;
+        if (hold > 0) {
+            return "" + hold;
+        }
+        return "success";
     }
     // !-------------------------------------------------------------------------------------------
 
@@ -427,6 +400,10 @@ public class Manegment {
             System.out.println("permission-denied");
             return;
 
+        }
+        if (targetUser.getDebt() != 0) {
+            System.out.println("not-allowed");
+            return;
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
@@ -465,6 +442,10 @@ public class Manegment {
             System.out.println("permission-denied");
             return;
 
+        }
+        if (targetUser.getDebt() != 0) {
+            System.out.println("not-allowed");
+            return;
         }
         Library targetLibrary = libraries.get(read.getLibraryId());
         if (targetLibrary == null) {

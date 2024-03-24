@@ -10,6 +10,7 @@ public class Document {
     private int copyNumber;
     private String categoryId;
     private String libraryId;
+    private int availableCopyNumber;
 
     public Document(String docId, String title, String author, String publisher, String publicationYear, int copyNumber,
             String categoryId, String libraryId) {
@@ -21,6 +22,8 @@ public class Document {
         this.copyNumber = copyNumber;
         this.categoryId = categoryId;
         this.libraryId = libraryId;
+        this.availableCopyNumber = copyNumber;
+
     }
 
     public String getDocId() {
@@ -87,4 +90,20 @@ public class Document {
         this.libraryId = libraryId;
     }
 
+    public int getAvailableCopyNumber() {
+        return this.availableCopyNumber;
+    }
+
+    public void setAvailableCopyNumber(int availableCopyNumber) {
+        this.availableCopyNumber = availableCopyNumber;
+    }
+
+    public void decreaseAvailableCopyNumber() {
+
+        this.availableCopyNumber--;
+    }
+
+    public void increaseAvailableCopyNumber() {
+        this.availableCopyNumber++;
+    }
 }

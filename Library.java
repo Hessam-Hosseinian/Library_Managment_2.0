@@ -6,6 +6,10 @@ import java.util.HashMap;
 import javax.xml.crypto.Data;
 
 import user.Manager;
+import user.Professor;
+import user.Staff;
+import user.Student;
+import user.User;
 import doc.Book;
 import doc.BuyableBook;
 import doc.Document;
@@ -40,6 +44,37 @@ public class Library {
         this.reads = new HashMap<>();
     }
 
+    private int checkDebt(Borrow borrow, Date returnTime, Document document, User user, boolean check) {
+        long firstMin = borrow.getDate().getTime() / 3600000;
+        long secondMin = returnTime.getTime() / 3600000;
+        long periodTime = secondMin - firstMin;
+        // if (check) {
+        // document.setDayOfBorrowed((int) Math.ceil(periodTime / 24.0));
+        // }
+        if (user instanceof Student) {
+            if (document instanceof Book) {
+                if (periodTime < (10 * 24)) {
+                    return 0;
+                }
+                return (int) ((periodTime - (10 * 24)) * 50);
+            }
+            if (periodTime < (7 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (7 * 24)) * 50);
+        }
+        if (document instanceof Book) {
+            if (periodTime < (14 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (14 * 24)) * 100);
+        }
+        if (periodTime < (10 * 24)) {
+            return 0;
+        }
+        return (int) ((periodTime - (10 * 24)) * 100);
+    }
+
     public boolean checkDocument(String docId) {
 
         if (documents.get(docId) == null) {
@@ -48,6 +83,55 @@ public class Library {
         }
         return false;
 
+    }
+
+    public boolean borrow(Borrow borrow, int userBorrows, User user, Document document) {
+        ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
+        if (borrows1 == null) {
+            borrows1 = new ArrayList<>();
+        }
+        if (document instanceof TreasureBook || document instanceof BuyableBook) {
+            return false;
+        }
+        if (countDocs(borrow.getDocumentId()) >= document.getCopyNumber()) {
+            return false;
+        }
+        if (isBorrowedByUser(borrow.getUserId(), borrow.getDocumentId())) {
+            return false;
+        }
+        if (user instanceof Student) {
+            if (userBorrows < 3) {
+                borrows1.add(borrow);
+                borrows.put(borrow.getDocumentId(), borrows1);
+                document.decreaseAvailableCopyNumber();
+                // todo document.borrowed();
+                return true;
+            }
+            return false;
+        } else if (user instanceof Staff || user instanceof Professor) {
+            if (userBorrows < 5) {
+                borrows1.add(borrow);
+                borrows.put(borrow.getDocumentId(), borrows1);
+                document.decreaseAvailableCopyNumber();
+                // todo resource.borrowed();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private boolean isBorrowedByUser(String userId, String resourceId) { // check that user get this resource or not
+        ArrayList<Borrow> myBorrow = borrows.get(resourceId);
+        if (myBorrow == null) {
+            return false;
+        }
+        for (Borrow borrow : myBorrow) {
+            if (borrow.getUserId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int countBorrows(String userId) {
@@ -68,154 +152,6 @@ public class Library {
             return 0;
         }
         return myBorrow.size();
-    }
-
-    public boolean borrow(Borrow borrow, int userBorrow) {
-        if (borrow.isStudent()) {
-            if (userBorrow < 3) {
-
-                if (isAllowed(borrow)) {
-
-                    return true;
-                }
-            }
-        } else {
-            if (userBorrow < 5) {
-
-                if (isAllowed(borrow)) {
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkdoublacheck(String userId, String DocumentId) {
-
-        for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
-            for (Borrow borrow : docBorrows) {
-                if (borrow.getUserId().equals(userId) && borrow.getDocumentId().equals(DocumentId)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-
-    }
-
-    public boolean checkAvailabilityBorrow(String docId) {
-
-        Document doc = documents.get(docId);
-        if (doc instanceof BuyableBook || doc instanceof TreasureBook) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-    public boolean isIsBook(String docId) {
-        Document doc = documents.get(docId);
-        if (doc instanceof Book) {
-            return true;
-
-        }
-        return false;
-
-    }
-
-    public boolean isAllowed(Borrow borrow) {
-        ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
-        if (borrows1 == null) {
-            borrows1 = new ArrayList<>();
-
-        }
-        if (borrow.isBook()) {
-            if (countDocs(borrow.getDocumentId()) < documents.get(borrow.getDocumentId()).getCopyNumber()) {
-                borrows1.add(borrow);
-                borrows.put(borrow.getDocumentId(), borrows1);
-                return true;
-            }
-
-            return false;
-        }
-        if (countDocs(borrow.getDocumentId()) == 0) {
-            borrows1.add(borrow);
-            borrows.put(borrow.getDocumentId(), borrows1);
-            return true;
-        }
-
-        return false;
-    }
-
-    public Borrow checkUserBorrows(String userId, String docId) {
-        Borrow borrowHelp = null;
-        ArrayList<Borrow> hold = borrows.get(docId);
-        if (hold == null) {
-
-            return null;
-        }
-        for (Borrow borrow : hold) {
-            if (borrow.getUserId().equals(userId)) {
-
-                borrowHelp = borrow;
-
-                return borrowHelp;
-            }
-        }
-        return borrowHelp;
-    }
-
-    public int returning(Borrow borrow, java.util.Date date) {
-        ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
-        int debt = checkDebt(borrow, date);
-        borrows1.remove(borrow);
-        return debt;
-    }
-
-    public Boolean checkdebtFor(String userId, Date date) {
-        for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
-            for (Borrow borrow : docBorrows) {
-                if (checkDebt(borrow, date) != 0 && borrow.getUserId().equals(userId)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-
-    }
-
-    public int checkDebt(Borrow borrow, Date date) {
-
-        long firstMin = borrow.getDate().getTime() / 3600000; // getTime return time as millisecond
-
-        long secondMin = ((Date) date).getTime() / 3600000; // getTime return time as millisecond
-
-        long periodTime = secondMin - firstMin;
-
-        if (borrow.isStudent()) {
-            if (borrow.isBook()) {
-                if (periodTime < (10 * 24)) {
-                    return 0;
-                }
-                return (int) ((periodTime - (10 * 24)) * 50); // BOOK AND STUDENT
-            }
-            if (periodTime < (7 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (7 * 24)) * 50); // THESIS AND STUDENT
-        }
-        if (borrow.isBook()) {
-            if (periodTime < (14 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (14 * 24)) * 100); // BOOK AND STAFF
-        }
-        if (periodTime < (10 * 24)) {
-            return 0;
-        }
-        return (int) ((periodTime - (10 * 24)) * 100);// THESIS AND STAFF
     }
 
     public void addBook(Book book) {
@@ -251,6 +187,42 @@ public class Library {
         }
         return false;
 
+    }
+
+    public int returning(Borrow borrow, Document document, User user) {
+        ArrayList<Borrow> borrows = this.borrows.get(borrow.getDocumentId());
+        Borrow itsBorrow = null;
+        if (borrows == null) {
+            return -1;
+        }
+        for (Borrow hold : borrows) {
+            if (hold.getUserId().equals(borrow.getUserId())) {
+                itsBorrow = hold;
+            }
+        }
+        if (itsBorrow == null) {
+            return -1;
+        }
+        int debt = checkDebt(itsBorrow, borrow.getDate(), document, user, true);
+        user.setDebt(debt);
+        borrows.remove(itsBorrow);
+        document.increaseAvailableCopyNumber();
+        return debt;
+    }
+
+    public boolean hasDelay(Borrow borrow1, Document document, User user, String userId) {
+        int x = 0;
+        for (ArrayList<Borrow> myBorrow : borrows.values()) {
+            if (myBorrow == null) {
+                return false;
+            }
+            for (Borrow borrow : myBorrow) {
+                if (borrow.getUserId().equals(userId)) {
+                    x += checkDebt(borrow, borrow1.getDate(), document, user, false);
+                }
+            }
+        }
+        return x > 0;
     }
 
     public boolean buyBook(String documentID) {

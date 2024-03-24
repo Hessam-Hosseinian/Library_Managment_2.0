@@ -87,7 +87,7 @@ public class User {
     }
 
     public void setDebt(int debt) {
-        this.debt = debt;
+        this.debt += debt;
     }
 
 }
