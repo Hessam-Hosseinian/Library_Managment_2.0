@@ -301,7 +301,7 @@ public class CommandManeger {
         java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
 
         Date date = new Date(utilDate.getTime());
-        // System.out.println(date);
+
         Read read = new Read(userId, libraryId, documentId, date);
         manegment.read(read, pass);
 
@@ -314,6 +314,12 @@ public class CommandManeger {
         System.out.println(manegment.addComment(userId, pass, libraryId, documentId, strComment));
 
     }
+    // ?---------------------------------------------------------------------
+
+    public void search(String key) {
+        System.out.println(manegment.search(key));
+    }
+    // ?---------------------------------------------------------------------
 
     public void res() {
         manegment.res();

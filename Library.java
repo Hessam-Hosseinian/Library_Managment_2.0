@@ -2,6 +2,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.xml.crypto.Data;
 
@@ -300,6 +301,22 @@ public class Library {
         long periodTime = secondTime - firstTime;
         // System.out.println(periodTime);
         return Math.abs(periodTime) >= 2;
+    }
+
+    public HashSet<String> search(String key) {
+        HashSet<String> output = new HashSet<>();
+        for (Document document : documents.values()) {
+            if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
+            }
+            if (document.getAuthor().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
+            }
+            if (document.getPublisher().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
+            }
+        }
+        return output;
     }
 
     public String getLibraryId() {

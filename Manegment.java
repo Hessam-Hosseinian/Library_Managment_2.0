@@ -1,5 +1,7 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -521,6 +523,26 @@ public class Manegment {
         targetDocument.addComment(strComment);
         return "success";
 
+    }
+
+    // !-------------------------------------------------------------------------------------------
+    public StringBuilder search(String key) {
+        HashSet<String> output = new HashSet<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Library library : libraries.values()) {
+            output.addAll(library.search(key));
+        }
+        ArrayList<String> hold = new ArrayList<>(output);
+        Collections.sort(hold);
+        for (String str : hold) {
+            stringBuilder.append(str);
+            stringBuilder.append("|");
+        }
+        if (stringBuilder.length() == 0) {
+            return stringBuilder.append("not-found");
+        }
+        stringBuilder = stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder;
     }
     // !-------------------------------------------------------------------------------------------
 
