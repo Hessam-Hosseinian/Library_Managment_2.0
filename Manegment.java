@@ -506,7 +506,7 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if (targetUser instanceof Staff) {
+        if ((targetUser instanceof Staff)) {
 
             return "permission-denied";
 
@@ -558,7 +558,8 @@ public class Manegment {
             return new StringBuilder("invalid-pass");
 
         }
-        if (user instanceof Student) {
+        if (user instanceof Student || user instanceof Manager) {
+
             return new StringBuilder("permission-denied");
 
         }
@@ -567,11 +568,14 @@ public class Manegment {
         StringBuilder searchID = new StringBuilder();
 
         for (User user2 : users.values()) {
-            if (user2.getFirstName().toLowerCase().contains(key.toLowerCase())) {
-                output.add(user2.getUserId());
-            }
-            if (user2.getLastName().toLowerCase().contains(key.toLowerCase())) {
-                output.add(user2.getUserId());
+            if (!(user2 instanceof Admin)) {
+
+                if (user2.getFirstName().toLowerCase().contains(key.toLowerCase())) {
+                    output.add(user2.getUserId());
+                }
+                if (user2.getLastName().toLowerCase().contains(key.toLowerCase())) {
+                    output.add(user2.getUserId());
+                }
             }
         }
 
@@ -589,6 +593,23 @@ public class Manegment {
     }
 
     // !-------------------------------------------------------------------------------------------
+
+    public String categoryReport(String categoryId, String librayId) {
+
+        Library targetLibrary = libraries.get(librayId);
+        if (targetLibrary == null) {
+            return "not-found";
+
+        }
+        Category targetCategory = categories.get(categoryId);
+        if (targetCategory == null) {
+            return "not-found";
+
+        }
+
+        // targetLibrary.categoryReport(categoryId);
+
+    }
     // !-------------------------------------------------------------------------------------------
     // !-------------------------------------------------------------------------------------------
 

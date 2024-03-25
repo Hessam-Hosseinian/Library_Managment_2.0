@@ -158,6 +158,14 @@ public class CommandManeger {
             search(command[1]);
         }
 
+        else if (input.contains("category-report")) {
+
+            if (manegment.checkManagerPermission(command[1], command[2], command[4])) {
+
+                categoryReport(command[3], command[4]);
+            }
+        }
+
     }
 
     // !--------------------------------------------------------------------------------------------------
@@ -335,6 +343,11 @@ public class CommandManeger {
     }
 
     // ?---------------------------------------------------------------------
+    public void categoryReport(String categoryId, String librayId) {
+        System.out.println(manegment.categoryReport(categoryId, librayId));
+    }
+    // ?---------------------------------------------------------------------
+
     public void res() {
         manegment.res();
 
