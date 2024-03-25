@@ -302,8 +302,6 @@ public class Library {
         return Math.abs(periodTime) >= 2;
     }
 
-    public void 
-
     public String getLibraryId() {
         return this.libraryId;
     }
