@@ -544,6 +544,51 @@ public class Manegment {
         stringBuilder = stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return stringBuilder;
     }
+
+    // !-------------------------------------------------------------------------------------------
+    public StringBuilder searchUser(String userId, String pass, String key) {
+        User user = users.get(userId);
+
+        if (user == null) {
+            return new StringBuilder("not-found");
+
+        }
+        if (!user.getPassword().equals(pass)) {
+            return new StringBuilder("invalid-pass");
+
+        }
+        if (user instanceof Student) {
+            return new StringBuilder("permission-denied");
+
+        }
+
+        HashSet<String> output = new HashSet<>();
+        StringBuilder searchID = new StringBuilder();
+
+        for (User user2 : users.values()) {
+            if (user2.getFirstName().toLowerCase().contains(key.toLowerCase())) {
+                output.add(user2.getUserId());
+            }
+            if (user2.getLastName().toLowerCase().contains(key.toLowerCase())) {
+                output.add(user2.getUserId());
+            }
+        }
+
+        ArrayList<String> outputArray = new ArrayList<>(output);
+        Collections.sort(outputArray);
+        for (String i : outputArray) {
+            searchID.append(i);
+            searchID.append("|");
+        }
+        if (searchID.length() == 0) {
+            return new StringBuilder("not-found");
+        }
+        searchID = searchID.deleteCharAt(searchID.length() - 1);
+        return searchID;
+    }
+
+    // !-------------------------------------------------------------------------------------------
+    // !-------------------------------------------------------------------------------------------
     // !-------------------------------------------------------------------------------------------
 
     public void res() {

@@ -319,8 +319,14 @@ public class CommandManeger {
     public void search(String key) {
         System.out.println(manegment.search(key));
     }
-    // ?---------------------------------------------------------------------
 
+    // ?---------------------------------------------------------------------
+    public void searchUser(String userId, String pass, String key) {
+
+        System.out.println(manegment.searchUser(userId, pass, key));
+    }
+
+    // ?---------------------------------------------------------------------
     public void res() {
         manegment.res();
 
