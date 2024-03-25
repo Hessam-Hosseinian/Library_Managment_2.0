@@ -506,12 +506,8 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if (targetUser instanceof Staff) {
+        if (!(targetUser instanceof Student || targetUser instanceof Professor)) {
 
-            return "permission-denied";
-        }
-
-        if (targetUser instanceof Manager) {
             return "permission-denied";
         }
         Library targetLibrary = libraries.get(libraryId);
@@ -561,10 +557,6 @@ public class Manegment {
 
         }
         if (user instanceof Student) {
-            return new StringBuilder("permission-denied");
-
-        }
-        if (user instanceof Manager) {
             return new StringBuilder("permission-denied");
 
         }

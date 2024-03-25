@@ -1,12 +1,9 @@
-import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javax.xml.crypto.Data;
-
-import user.Manager;
 import user.Professor;
 import user.Staff;
 import user.Student;
@@ -306,19 +303,17 @@ public class Library {
     public HashSet<String> search(String key) {
         HashSet<String> output = new HashSet<>();
         for (Document document : documents.values()) {
-            if (document instanceof Book) {
 
-                if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(document.getDocId());
-                }
-                if (document.getAuthor().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(document.getDocId());
-                }
-                if (document.getPublisher().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(document.getDocId());
-                }
-
+            if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
             }
+            if (document.getAuthor().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
+            }
+            if (document.getPublisher().toLowerCase().contains(key.toLowerCase())) {
+                output.add(document.getDocId());
+            }
+
             if (document instanceof Thesis) {
 
                 if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
