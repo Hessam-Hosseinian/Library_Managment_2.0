@@ -511,6 +511,9 @@ public class Manegment {
             return "permission-denied";
         }
 
+        if (targetUser instanceof Manager) {
+            return "permission-denied";
+        }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
             return "not-found";
@@ -558,6 +561,10 @@ public class Manegment {
 
         }
         if (user instanceof Student) {
+            return new StringBuilder("permission-denied");
+
+        }
+        if (user instanceof Manager) {
             return new StringBuilder("permission-denied");
 
         }

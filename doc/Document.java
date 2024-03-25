@@ -31,7 +31,7 @@ public class Document {
     }
 
     public void addComment(String comment) {
-        comments.add(comment);
+        this.comments.add(comment);
 
     }
 
