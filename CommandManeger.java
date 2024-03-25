@@ -146,6 +146,11 @@ public class CommandManeger {
             read(command[1], command[2], command[3], command[4], command[5], command[6]);
         }
 
+        else if (input.contains("add-comment")) {
+            // read(command[1], command[2], command[3], command[4], command[5], command[6]);
+            comment(command[1], command[2], command[3], command[4], command[5]);
+        }
+
     }
 
     // !--------------------------------------------------------------------------------------------------
@@ -300,6 +305,14 @@ public class CommandManeger {
         // System.out.println(date);
         Read read = new Read(userId, libraryId, documentId, date);
         manegment.read(read, pass);
+
+    }
+
+    // ?---------------------------------------------------------------------
+
+    public void addComment(String userId, String pass, String libraryId, String documentId, String strComment) {
+
+        System.out.println(manegment.addComment(userId, pass, libraryId, documentId, strComment));
 
     }
 

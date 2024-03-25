@@ -492,6 +492,36 @@ public class Manegment {
         return;
 
     }
+
+    // !-------------------------------------------------------------------------------------------
+    public String addComment(String userId, String pass, String libraryId, String documentId, String strComment) {
+
+        User targetUser = users.get(userId);
+        if (targetUser == null) {
+            return "not-found";
+        }
+        if (!targetUser.getPassword().equals(pass)) {
+            return "invalid-pass";
+
+        }
+        if (targetUser instanceof Staff) {
+
+            return "permission-denied";
+        }
+
+        Library targetLibrary = libraries.get(libraryId);
+        if (targetLibrary == null) {
+            return "not-found";
+        }
+        Document targetDocument = targetLibrary.getDocuments(documentId);
+        if (targetDocument == null) {
+            return "not-found";
+
+        }
+        targetDocument.addComment(strComment);
+        return "success";
+
+    }
     // !-------------------------------------------------------------------------------------------
 
     public void res() {

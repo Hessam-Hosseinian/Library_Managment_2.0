@@ -30,6 +30,11 @@ public class Document {
 
     }
 
+    public void addComment(String comment) {
+        comments.add(comment);
+
+    }
+
     public String getDocId() {
         return this.docId;
     }
