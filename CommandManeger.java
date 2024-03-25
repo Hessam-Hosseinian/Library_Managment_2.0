@@ -150,6 +150,14 @@ public class CommandManeger {
             addComment(command[1], command[2], command[3], command[4], command[5]);
         }
 
+        else if (input.contains("search-user")) {
+            searchUser(command[1], command[2], command[3]);
+        }
+
+        else if (input.contains("search")) {
+            search(command[1]);
+        }
+
     }
 
     // !--------------------------------------------------------------------------------------------------
