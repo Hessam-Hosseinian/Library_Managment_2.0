@@ -305,14 +305,17 @@ public class Manegment {
             return "not-found";
 
         }
-        if (!targetLibrary.removeResource(docId)) {
+        if (targetLibrary.getDocuments(docId) == null) {
             return "not-found";
+
         }
+
         if (targetLibrary.checkBorrowed(docId)) {
 
             return "not-allowed";
         }
-        // System.out.println(targetLibrary.checkBorrowed(docId));
+
+        targetLibrary.removeResource(docId);
 
         return "success";
     }
@@ -393,12 +396,12 @@ public class Manegment {
             return "not-found";
 
         }
-        int hold = library.returning(borrow, document, user);
-        if (hold < 0) {
+        int debt = library.returning(borrow, document, user);
+        if (debt < 0) {
             return "not-found";
         }
-        if (hold > 0) {
-            return "" + hold;
+        if (debt > 0) {
+            return "" + debt;
         }
         return "success";
     }
@@ -417,10 +420,14 @@ public class Manegment {
             System.out.println("invalid-pass");
             return;
         }
-        if ((targetUser instanceof Manager)) {
+        if (targetUser instanceof Manager) {
             System.out.println("permission-denied");
             return;
 
+        }
+        if (targetUser.getDebt() != 0) {
+            System.out.println("not-allowed");
+            return;
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
@@ -431,10 +438,6 @@ public class Manegment {
             System.out.println("not-found");
             return;
 
-        }
-        if (targetUser.getDebt() != 0) {
-            System.out.println("not-allowed");
-            return;
         }
 
         if (targetLibrary.buyBook(documentId)) {

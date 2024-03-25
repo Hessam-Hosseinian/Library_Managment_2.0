@@ -297,7 +297,7 @@ public class CommandManeger {
         java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
 
         Date date = new Date(utilDate.getTime());
-        System.out.println(date);
+        // System.out.println(date);
         Read read = new Read(userId, libraryId, documentId, date);
         manegment.read(read, pass);
 

@@ -178,14 +178,9 @@ public class Library {
 
     }
 
-    public Boolean removeResource(String docId) {
+    public void removeResource(String docId) {
 
-        if (documents.get(docId) != null) {
-
-            documents.remove(docId);
-            return true;
-        }
-        return false;
+        documents.remove(docId);
 
     }
 
@@ -248,7 +243,6 @@ public class Library {
             System.out.println("not-allowed");
             return false;
         }
-        // BuyableBook buyableBook = (BuyableBook) document;
 
         if (document.getAvailableCopyNumber() == 0) {
 
