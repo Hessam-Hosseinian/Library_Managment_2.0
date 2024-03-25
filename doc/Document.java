@@ -1,5 +1,7 @@
 package doc;
 
+import java.util.ArrayList;
+
 public class Document {
 
     private String docId;
@@ -11,6 +13,7 @@ public class Document {
     private String categoryId;
     private String libraryId;
     private int availableCopyNumber;
+    private ArrayList<String> comments;
 
     public Document(String docId, String title, String author, String publisher, String publicationYear, int copyNumber,
             String categoryId, String libraryId) {
@@ -23,6 +26,7 @@ public class Document {
         this.categoryId = categoryId;
         this.libraryId = libraryId;
         this.availableCopyNumber = copyNumber;
+        this.comments = new ArrayList<>();
 
     }
 
@@ -106,4 +110,13 @@ public class Document {
     public void increaseAvailableCopyNumber() {
         this.availableCopyNumber++;
     }
+
+    public ArrayList<String> getComments() {
+        return this.comments;
+    }
+
+    public void setComments(ArrayList<String> comments) {
+        this.comments = comments;
+    }
+
 }
