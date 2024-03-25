@@ -304,6 +304,20 @@ public class Library {
         HashSet<String> output = new HashSet<>();
         for (Document document : documents.values()) {
 
+            if (document instanceof Thesis) {
+
+                if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
+                    output.add(document.getDocId());
+                }
+                Thesis thesis = (Thesis) document;
+                if (thesis.getStudentName().toLowerCase().contains(key.toLowerCase())) {
+                    output.add(thesis.getDocId());
+                }
+                if (thesis.getProfessorName().toLowerCase().contains(key.toLowerCase())) {
+                    output.add(thesis.getDocId());
+                }
+
+            }
             if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
                 output.add(document.getDocId());
             }
@@ -314,21 +328,6 @@ public class Library {
                 output.add(document.getDocId());
             }
 
-            if (document instanceof Thesis) {
-
-                if (document.getTitle().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(document.getDocId());
-                }
-
-                Thesis thesis = (Thesis) document;
-                if (thesis.getStudentName().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(thesis.getDocId());
-                }
-                if (thesis.getProfessorName().toLowerCase().contains(key.toLowerCase())) {
-                    output.add(thesis.getDocId());
-                }
-
-            }
         }
         return output;
     }

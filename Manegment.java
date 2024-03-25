@@ -506,9 +506,10 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if (!(targetUser instanceof Student || targetUser instanceof Professor)) {
+        if (targetUser instanceof Staff) {
 
             return "permission-denied";
+
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
@@ -516,6 +517,7 @@ public class Manegment {
         }
         Document targetDocument = targetLibrary.getDocuments(documentId);
         if (targetDocument == null) {
+
             return "not-found";
 
         }
