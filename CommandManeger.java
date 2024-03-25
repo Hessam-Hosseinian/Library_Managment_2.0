@@ -147,8 +147,7 @@ public class CommandManeger {
         }
 
         else if (input.contains("add-comment")) {
-            // read(command[1], command[2], command[3], command[4], command[5], command[6]);
-            comment(command[1], command[2], command[3], command[4], command[5]);
+            addComment(command[1], command[2], command[3], command[4], command[5]);
         }
 
     }
