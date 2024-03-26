@@ -292,11 +292,8 @@ public class Library {
             return true;
         }
         long firstTime = dateHold.getTime() / 3600000;
-        // System.out.println(firstTime);
         long secondTime = dateHold2.getTime() / 3600000;
-        // System.out.println(secondTime);
         long periodTime = secondTime - firstTime;
-        // System.out.println(periodTime);
         return Math.abs(periodTime) >= 2;
     }
 
@@ -369,14 +366,6 @@ public class Library {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    // public HashMap<String, Manager> getManagers() {
-    // return this.managers;
-    // }
-
-    // public void setManagers(HashMap<String, Manager> managers) {
-    // this.managers = managers;
-    // }
 
     public Document getDocuments(String Id) {
         return documents.get(Id);

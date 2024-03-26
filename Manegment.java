@@ -506,13 +506,12 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if ((targetUser instanceof Staff)) {
-
+        if (!(targetUser instanceof Student || targetUser instanceof Professor)) {
             return "permission-denied";
-
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
+
             return "not-found";
         }
         Document targetDocument = targetLibrary.getDocuments(documentId);
@@ -558,7 +557,7 @@ public class Manegment {
             return new StringBuilder("invalid-pass");
 
         }
-        if (user instanceof Student || user instanceof Manager) {
+        if (!(user instanceof Professor || user instanceof Staff)) {
 
             return new StringBuilder("permission-denied");
 
@@ -568,7 +567,7 @@ public class Manegment {
         StringBuilder searchID = new StringBuilder();
 
         for (User user2 : users.values()) {
-            if (!(user2 instanceof Admin)) {
+            if (!(user2 instanceof Admin || user2 instanceof Manager)) {
 
                 if (user2.getFirstName().toLowerCase().contains(key.toLowerCase())) {
                     output.add(user2.getUserId());
@@ -594,22 +593,22 @@ public class Manegment {
 
     // !-------------------------------------------------------------------------------------------
 
-    public String categoryReport(String categoryId, String librayId) {
+    // public String categoryReport(String categoryId, String librayId) {
 
-        Library targetLibrary = libraries.get(librayId);
-        if (targetLibrary == null) {
-            return "not-found";
+    // Library targetLibrary = libraries.get(librayId);
+    // if (targetLibrary == null) {
+    // return "not-found";
 
-        }
-        Category targetCategory = categories.get(categoryId);
-        if (targetCategory == null) {
-            return "not-found";
+    // }
+    // Category targetCategory = categories.get(categoryId);
+    // if (targetCategory == null) {
+    // return "not-found";
 
-        }
+    // }
 
-        // targetLibrary.categoryReport(categoryId);
+    // targetLibrary.categoryReport(categoryId);
 
-    }
+    // }
     // !-------------------------------------------------------------------------------------------
     // !-------------------------------------------------------------------------------------------
 

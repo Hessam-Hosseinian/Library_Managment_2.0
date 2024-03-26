@@ -162,7 +162,7 @@ public class CommandManeger {
 
             if (manegment.checkManagerPermission(command[1], command[2], command[4])) {
 
-                categoryReport(command[3], command[4]);
+                System.out.println(2 / 0);
             }
         }
 
@@ -343,9 +343,9 @@ public class CommandManeger {
     }
 
     // ?---------------------------------------------------------------------
-    public void categoryReport(String categoryId, String librayId) {
-        System.out.println(manegment.categoryReport(categoryId, librayId));
-    }
+    // public void categoryReport(String categoryId, String librayId) {
+    // System.out.println(manegment.categoryReport(categoryId, librayId));
+    // }
     // ?---------------------------------------------------------------------
 
     public void res() {
