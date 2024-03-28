@@ -23,7 +23,7 @@ public class Manegment {
 
     private HashMap<String, User> users;
 
-    private HashMap<String, Category> categories;
+    private static HashMap<String, Category> categories;
 
     public Manegment() {
 
@@ -34,7 +34,7 @@ public class Manegment {
         Admin admin = new Admin("admin", "AdminPass", "-", "-", "-", "-", "-");
         users.put("admin", admin);
 
-        Category nullCategory = new Category("null", "null", "null");
+        Category nullCategory = new Category("null", "null");
         categories.put("null", nullCategory);
 
     }
@@ -84,16 +84,17 @@ public class Manegment {
     }
     // !-------------------------------------------------------------------------------------------
 
-    public String addCategory(Category category) {
+    public String addCategory(Category category, String subCategory) {
         if (categories.get(category.getCategoryId()) != null) {
             return "duplicate-id";
 
         }
-        if (categories.get(category.getSubCategory()) == null) {
+        Category subbCategory = categories.get(subCategory);
+        if (subbCategory == null) {
             return "not-found";
 
         }
-
+        subbCategory.setSubs(category);
         categories.put(category.getCategoryId(), category);
         return "success";
 
@@ -513,6 +514,7 @@ public class Manegment {
         if (targetLibrary == null) {
 
             return "not-found";
+
         }
         Document targetDocument = targetLibrary.getDocuments(documentId);
         if (targetDocument == null) {
@@ -593,23 +595,45 @@ public class Manegment {
 
     // !-------------------------------------------------------------------------------------------
 
-    // public String categoryReport(String categoryId, String librayId) {
+    public void categoryReport(String categoryId, String librayId) {
 
-    // Library targetLibrary = libraries.get(librayId);
-    // if (targetLibrary == null) {
-    // return "not-found";
+        Library targetLibrary = libraries.get(librayId);
+        if (targetLibrary == null) {
+            System.out.println("not-found");
+            return;
 
-    // }
-    // Category targetCategory = categories.get(categoryId);
-    // if (targetCategory == null) {
-    // return "not-found";
+        }
+        Category targetCategory = categories.get(categoryId);
+        if (targetCategory == null) {
+            System.out.println("not-found");
+            return;
 
-    // }
+        }
+        Category targeCategory = categories.get(categoryId);
 
-    // targetLibrary.categoryReport(categoryId);
+        int[] count = targetLibrary.categoryReport(targeCategory);
+        System.out.println(count[0] + " " + count[1] + " " + count[2] + " " + count[3]);
 
-    // }
+    }
+
+    public static Category getCategory(String categoryId) {
+
+        return categories.get(categoryId);
+    }
+
     // !-------------------------------------------------------------------------------------------
+
+    public String libraryReport(String libraryId) {
+
+        Library targetLibrary = libraries.get(libraryId);
+        if (targetLibrary == null) {
+
+            return "not-found";
+
+        }
+        return targetLibrary.libraryReport();
+
+    }
     // !-------------------------------------------------------------------------------------------
 
     public void res() {

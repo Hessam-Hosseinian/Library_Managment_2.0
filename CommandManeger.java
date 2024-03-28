@@ -162,9 +162,22 @@ public class CommandManeger {
 
             if (manegment.checkManagerPermission(command[1], command[2], command[4])) {
 
-                System.out.println(2 / 0);
+                categoryReport(command[3], command[4]);
             }
         }
+
+        else if (input.contains("library-report")) {
+            if (manegment.checkManagerPermission(command[1], command[2], command[3])) {
+
+                libraryReport(command[3]);
+            }
+        }
+
+        // else if (input.contains("report-passed-deadline")) {
+        // System.out.println(2 / 0);
+        // } else if (input.contains("report-penalties-sum")) {
+        // System.out.println(2 / 0);
+        // }
 
     }
 
@@ -184,9 +197,9 @@ public class CommandManeger {
 
     public void addCategory(String categoryId, String categoryName, String subCategory) {
 
-        Category category = new Category(categoryId, categoryName, subCategory);
+        Category category = new Category(categoryId, categoryName);
 
-        System.out.println(manegment.addCategory(category));
+        System.out.println(manegment.addCategory(category, subCategory));
     }
     // ?---------------------------------------------------------------------
 
@@ -343,9 +356,16 @@ public class CommandManeger {
     }
 
     // ?---------------------------------------------------------------------
-    // public void categoryReport(String categoryId, String librayId) {
-    // System.out.println(manegment.categoryReport(categoryId, librayId));
-    // }
+    public void categoryReport(String categoryId, String librayId) {
+        manegment.categoryReport(categoryId, librayId);
+    }
+    // ?---------------------------------------------------------------------
+
+    public void libraryReport(String libraryId) {
+
+        manegment.libraryReport(libraryId);
+
+    }
     // ?---------------------------------------------------------------------
 
     public void res() {

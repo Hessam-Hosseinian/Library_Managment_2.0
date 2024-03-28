@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import user.Professor;
 import user.Staff;
@@ -324,6 +325,72 @@ public class Library {
 
         }
         return output;
+    }
+
+    public int[] categoryReport(Category category) {
+        int[] bookCounts = new int[4];
+        countBooksRecursivelyHelper(category, bookCounts);
+        return bookCounts;
+    }
+
+    public void countBooksRecursivelyHelper(Category category, int[] bookCounts) {
+
+        for (Document document : documents.values()) {
+            if (document.getCategoryId().equals(category.getCategoryId())) {
+
+                if (document instanceof Book) {
+                    bookCounts[0] += document.getCopyNumber();
+                }
+                if (document instanceof Thesis) {
+                    bookCounts[1] += document.getCopyNumber();
+                }
+                if (document instanceof TreasureBook) {
+                    bookCounts[2] += document.getCopyNumber();
+                }
+                if (document instanceof BuyableBook) {
+                    bookCounts[3] += document.getCopyNumber();
+                }
+            }
+        }
+        ArrayList<Category> subs = category.getSubCategory();
+        for (Category category2 : subs) {
+            countBooksRecursivelyHelper(category2, bookCounts);
+        }
+
+    }
+
+    public String libraryReport() {
+        int bookNum = 0, thesisNum = 0, ganjineNum = 0, sellingBookNum = 0, borrowedBook = 0, borrowedThesis = 0;
+
+        for (Document document : documents.values()) {
+
+            if (document instanceof Book) {
+                bookNum += document.getCopyNumber();
+            }
+            if (document instanceof Thesis) {
+                thesisNum += document.getCopyNumber();
+            }
+            if (document instanceof TreasureBook) {
+                ganjineNum += document.getCopyNumber();
+            }
+            if (document instanceof BuyableBook) {
+                sellingBookNum += document.getAvailableCopyNumber();
+            }
+        }
+        for (ArrayList<Borrow> borrows1 : new ArrayList<>(borrows.values())) {
+            for (Borrow borrow : borrows1) {
+                if (borrow.isBook()) {
+                    borrowedBook++;
+                }
+
+                else {
+                    borrowedThesis++;
+                }
+            }
+        }
+
+        return "" + bookNum + " " + thesisNum + " " + borrowedBook + " " + borrowedThesis + " " + ganjineNum + " "
+                + sellingBookNum;
     }
 
     public String getLibraryId() {
