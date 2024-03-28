@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -507,8 +508,9 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if (!(targetUser instanceof Student || targetUser instanceof Professor)) {
+        if (targetUser instanceof Staff) {
             return "permission-denied";
+
         }
         Library targetLibrary = libraries.get(libraryId);
         if (targetLibrary == null) {
@@ -529,7 +531,7 @@ public class Manegment {
 
     // !-------------------------------------------------------------------------------------------
     public StringBuilder search(String key) {
-        HashSet<String> output = new HashSet<>();
+        ArrayList<String> output = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
         for (Library library : libraries.values()) {
             output.addAll(library.search(key));
@@ -569,7 +571,7 @@ public class Manegment {
         StringBuilder searchID = new StringBuilder();
 
         for (User user2 : users.values()) {
-            if (!(user2 instanceof Admin || user2 instanceof Manager)) {
+            if (!(user2 instanceof Admin)) {
 
                 if (user2.getFirstName().toLowerCase().contains(key.toLowerCase())) {
                     output.add(user2.getUserId());
@@ -635,6 +637,41 @@ public class Manegment {
 
     }
     // !-------------------------------------------------------------------------------------------
+
+    public StringBuilder reportPasseDeadline(String libraryId, Date date) {
+        StringBuilder output;
+        Library library = libraries.get(libraryId);
+        if (library == null) {
+            return new StringBuilder("not-found");
+        }
+        output = library.reportPassedDeadline(date);
+        if (output.length() == 0) {
+            return new StringBuilder("none");
+        }
+        output = output.deleteCharAt(output.length() - 1);
+        return output;
+    }
+    // !-------------------------------------------------------------------------------------------
+
+    public String reportPenaltiesSum(String managerID, String managetPass) {
+
+        User targetUser = users.get(managerID);
+        if (targetUser == null) {
+            return "not-found";
+
+        }
+        if (!(targetUser.getPassword().equals(managetPass))) {
+            return "invalid-pass";
+
+        }
+        int sum = 0;
+        for (User user : users.values()) {
+            sum += user.getDebt();
+        }
+
+        return "" + sum;
+
+    }
 
     public void res() {
 

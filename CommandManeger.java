@@ -147,6 +147,7 @@ public class CommandManeger {
         }
 
         else if (input.contains("add-comment")) {
+
             addComment(command[1], command[2], command[3], command[4], command[5]);
         }
 
@@ -173,11 +174,17 @@ public class CommandManeger {
             }
         }
 
-        // else if (input.contains("report-passed-deadline")) {
-        // System.out.println(2 / 0);
-        // } else if (input.contains("report-penalties-sum")) {
-        // System.out.println(2 / 0);
-        // }
+        else if (input.contains("report-passed-deadline")) {
+            if (manegment.checkManagerPermission(command[1], command[2], command[3])) {
+
+                reportPasseDeadline(command[3], command[4], command[5]);
+            }
+        }
+
+        else if (input.contains("report-penalties-sum")) {
+
+            reportPenaltiesSum(command[1], command[2]);
+        }
 
     }
 
@@ -367,6 +374,17 @@ public class CommandManeger {
 
     }
     // ?---------------------------------------------------------------------
+
+    public void reportPasseDeadline(String libraryId, String strDate, String hour) throws ParseException {
+        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strDate + " " + hour);
+
+        Date date = new Date(utilDate.getTime());
+        System.out.println(manegment.reportPasseDeadline(libraryId, date));
+    }
+
+    public void reportPenaltiesSum(String managerID, String managerPass) {
+        System.out.println(manegment.reportPenaltiesSum(managerID, managerPass));
+    }
 
     public void res() {
         manegment.res();

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -391,6 +392,54 @@ public class Library {
 
         return "" + bookNum + " " + thesisNum + " " + borrowedBook + " " + borrowedThesis + " " + ganjineNum + " "
                 + sellingBookNum;
+    }
+
+    public int checkDebt(Borrow borrow, java.util.Date date) {
+        long firstMin = borrow.getDate().getTime() / 3600000; // getTime return time as millisecond
+        long secondMin = date.getTime() / 3600000; // getTime return time as millisecond
+        long periodTime = secondMin - firstMin;
+        if (borrow.isStudent()) {
+            if (borrow.isBook()) {
+                if (periodTime < (10 * 24)) {
+                    return 0;
+                }
+                return (int) ((periodTime - (10 * 24)) * 50); // BOOK AND STUDENT
+            }
+            if (periodTime < (7 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (7 * 24)) * 50); // THESIS AND STUDENT
+        }
+        if (borrow.isBook()) {
+            if (periodTime < (14 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (14 * 24)) * 100); // BOOK AND STAFF
+        }
+        if (periodTime < (10 * 24)) {
+            return 0;
+        }
+        return (int) ((periodTime - (10 * 24)) * 100);// THESIS AND STAFF
+    }
+
+    public StringBuilder reportPassedDeadline(Date date) {
+        HashSet<String> outPut = new HashSet<>();
+        StringBuilder hold = new StringBuilder();
+        for (ArrayList<Borrow> borrows1 : new ArrayList<>(borrows.values())) {
+            for (Borrow borrow : borrows1) {
+                if (checkDebt(borrow, date) != 0) {// check if there is debt for the borrow and date
+                    outPut.add(borrow.getDocumentId());
+                }
+            }
+        }
+
+        ArrayList<String> outputArray = new ArrayList<>(outPut);
+        Collections.sort(outputArray); // sort the list and separate them whit "|"
+        for (String i : outputArray) {
+            hold.append(i);
+            hold.append("|");
+        }
+        return hold;
     }
 
     public String getLibraryId() {
