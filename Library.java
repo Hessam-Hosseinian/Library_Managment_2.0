@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import user.Professor;
 import user.Staff;
@@ -16,6 +15,14 @@ import doc.Document;
 import doc.Thesis;
 import doc.TreasureBook;
 
+/**
+ * Represents a library entity with information such as ID, name, foundation
+ * year, desk number, and address.
+ * It also contains collections of documents, borrows, and reads associated with
+ * the library.
+ * 
+ * @author Hessam Hosseinian
+ */
 public class Library {
 
     private String libraryId;
@@ -27,6 +34,15 @@ public class Library {
     private HashMap<String, ArrayList<Borrow>> borrows;
     private HashMap<String, Read> reads;
 
+    /**
+     * Constructs a new Library object with the specified details.
+     *
+     * @param libraryId      The unique identifier of the library.
+     * @param libraryName    The name of the library.
+     * @param foundationYear The year the library was founded.
+     * @param deskNumber     The number of desks available in the library.
+     * @param address        The address of the library.
+     */
     public Library(String libraryId, String libraryName, String foundationYear, int deskNumber, String address) {
         this.libraryId = libraryId;
         this.libraryName = libraryName;
@@ -39,48 +55,73 @@ public class Library {
         this.reads = new HashMap<>();
     }
 
-    private int checkDebt(Borrow borrow, Date returnTime, Document document, User user, boolean check) {
-        long firstMin = borrow.getDate().getTime() / 3600000;
-        long secondMin = returnTime.getTime() / 3600000;
-        long periodTime = secondMin - firstMin;
-        if (check) {
-            document.setDaysOfBorrowed((int) Math.ceil(periodTime / 24.0));
-            document.setTimeThatdocIsUnderBorrow(periodTime);
-        }
-        if (user instanceof Student) {
-            if (document instanceof Book) {
-                if (periodTime < (10 * 24)) {
-                    return 0;
-                }
-                return (int) ((periodTime - (10 * 24)) * 50);
-            }
-            if (periodTime < (7 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (7 * 24)) * 50);
-        }
-        if (document instanceof Book) {
-            if (periodTime < (14 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (14 * 24)) * 100);
-        }
-        if (periodTime < (10 * 24)) {
-            return 0;
-        }
-        return (int) ((periodTime - (10 * 24)) * 100);
+    // !------------------------------------------------------------DOCUMENT
+    /**
+     * Adds a book to the document collection.
+     *
+     * @param book The book to add.
+     */
+    public void addBook(Book book) {
+        documents.put(book.getDocId(), book);
     }
 
+    /**
+     * Adds a thesis to the document collection.
+     *
+     * @param thesis The thesis to add.
+     */
+    public void addThesis(Thesis thesis) {
+        documents.put(thesis.getDocId(), thesis);
+    }
+
+    /**
+     * Adds a treasure book to the document collection.
+     *
+     * @param treasureBook The treasure book to add.
+     */
+    public void addTreasureBook(TreasureBook treasureBook) {
+        documents.put(treasureBook.getDocId(), treasureBook);
+    }
+
+    /**
+     * Adds a selling book to the document collection.
+     *
+     * @param buyableBook The selling book to add.
+     */
+    public void addSellingBook(BuyableBook buyableBook) {
+        documents.put(buyableBook.getDocId(), buyableBook);
+    }
+
+    /**
+     * Removes a resource from the document collection.
+     *
+     * @param docId The ID of the document to remove.
+     */
+    public void removeResource(String docId) {
+        documents.remove(docId);
+    }
+
+    /**
+     * Checks if a document with the specified ID exists in the document collection.
+     *
+     * @param docId The ID of the document to check.
+     * @return {@code true} if the document does not exist, {@code false} otherwise.
+     */
     public boolean checkDocument(String docId) {
-
-        if (documents.get(docId) == null) {
-            return true;
-
-        }
-        return false;
-
+        return documents.get(docId) == null;
     }
 
+    // !------------------------------------------------------------BORROW
+    /**
+     * Attempts to borrow a document.
+     *
+     * @param borrow      The borrow request.
+     * @param userBorrows The number of borrows by the user.
+     * @param user        The user attempting to borrow the document.
+     * @param document    The document being borrowed.
+     * @return {@code true} if the borrow operation is successful, {@code false}
+     *         otherwise.
+     */
     public boolean borrow(Borrow borrow, int userBorrows, User user, Document document) {
         ArrayList<Borrow> borrows1 = borrows.get(borrow.getDocumentId());
         if (borrows1 == null) {
@@ -117,6 +158,92 @@ public class Library {
         return false;
     }
 
+    /**
+     * Calculates the debt incurred by a borrow.
+     *
+     * @param borrow     The borrow details.
+     * @param returnTime The time the document is returned.
+     * @param document   The document being borrowed.
+     * @param user       The user borrowing the document.
+     * @param check      Flag to indicate whether to update document borrow
+     *                   information.
+     * @return The debt amount incurred by the borrow.
+     */
+    private int checkDebt(Borrow borrow, Date returnTime, Document document, User user, boolean check) {
+        long firstMin = borrow.getDate().getTime() / 3600000;
+        long secondMin = returnTime.getTime() / 3600000;
+        long periodTime = secondMin - firstMin;
+        if (check) {
+            document.setDaysOfBorrowed((int) Math.ceil(periodTime / 24.0));
+            document.setTimeThatdocIsUnderBorrow(periodTime);
+        }
+        if (user instanceof Student) {
+            if (document instanceof Book) {
+                if (periodTime < (10 * 24)) {
+                    return 0;
+                }
+                return (int) ((periodTime - (10 * 24)) * 50);
+            }
+            if (periodTime < (7 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (7 * 24)) * 50);
+        }
+        if (document instanceof Book) {
+            if (periodTime < (14 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (14 * 24)) * 100);
+        }
+        if (periodTime < (10 * 24)) {
+            return 0;
+        }
+        return (int) ((periodTime - (10 * 24)) * 100);
+    }
+
+    /**
+     * Calculates the debt incurred by a borrow.
+     *
+     * @param borrow The borrow details.
+     * @param date   The date when the calculation is performed.
+     * @return The debt amount incurred by the borrow.
+     */
+    public int checkDebt(Borrow borrow, java.util.Date date) {
+        long firstMin = borrow.getDate().getTime() / 3600000;
+        long secondMin = date.getTime() / 3600000;
+        long periodTime = secondMin - firstMin;
+        if (borrow.isStudent()) {
+            if (borrow.isBook()) {
+                if (periodTime < (10 * 24)) {
+                    return 0;
+                }
+                return (int) ((periodTime - (10 * 24)) * 50);
+            }
+            if (periodTime < (7 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (7 * 24)) * 50);
+        }
+        if (borrow.isBook()) {
+            if (periodTime < (14 * 24)) {
+                return 0;
+            }
+            return (int) ((periodTime - (14 * 24)) * 100);
+        }
+        if (periodTime < (10 * 24)) {
+            return 0;
+        }
+        return (int) ((periodTime - (10 * 24)) * 100);
+    }
+
+    /**
+     * Checks if a document is already borrowed by a user.
+     *
+     * @param userId     The ID of the user.
+     * @param resourceId The ID of the resource (document).
+     * @return {@code true} if the document is already borrowed by the user,
+     *         {@code false} otherwise.
+     */
     private boolean isBorrowedByUser(String userId, String resourceId) {
         ArrayList<Borrow> myBorrow = borrows.get(resourceId);
         if (myBorrow == null) {
@@ -130,6 +257,12 @@ public class Library {
         return false;
     }
 
+    /**
+     * Counts the number of borrows by a user.
+     *
+     * @param userId The ID of the user.
+     * @return The number of borrows by the user.
+     */
     public int countBorrows(String userId) {
         int count = 0;
         for (ArrayList<Borrow> docBorrows : new ArrayList<>(borrows.values())) {
@@ -142,6 +275,12 @@ public class Library {
         return count;
     }
 
+    /**
+     * Counts the number of borrows for a document.
+     *
+     * @param docId The ID of the document.
+     * @return The number of borrows for the document.
+     */
     public int countDocs(String docId) {
         ArrayList<Borrow> myBorrow = borrows.get(docId);
         if (myBorrow == null) {
@@ -150,36 +289,13 @@ public class Library {
         return myBorrow.size();
     }
 
-    public void addBook(Book book) {
-
-        documents.put(book.getDocId(), book);
-
-    }
-
-    public void addThesis(Thesis thesis) {
-
-        documents.put(thesis.getDocId(), thesis);
-
-    }
-
-    public void addTreasureBook(TreasureBook treasureBook) {
-
-        documents.put(treasureBook.getDocId(), treasureBook);
-
-    }
-
-    public void addSellingBook(BuyableBook buyableBook) {
-
-        documents.put(buyableBook.getDocId(), buyableBook);
-
-    }
-
-    public void removeResource(String docId) {
-
-        documents.remove(docId);
-
-    }
-
+    /**
+     * Checks if a document is currently borrowed.
+     *
+     * @param docId The ID of the document.
+     * @return {@code true} if the document is currently borrowed, {@code false}
+     *         otherwise.
+     */
     public boolean checkBorrowed(String docId) {
         ArrayList<Borrow> borrows = this.borrows.get(docId);
         if (borrows == null || borrows.size() == 0) {
@@ -191,6 +307,16 @@ public class Library {
 
     }
 
+    // !------------------------------------------------------------RETURNING
+    /**
+     * Processes the return of a borrowed document.
+     *
+     * @param borrow   The borrow details.
+     * @param document The document being returned.
+     * @param user     The user returning the document.
+     * @return The debt incurred by the return operation, or {@code -1} if the
+     *         operation fails.
+     */
     public int returning(Borrow borrow, Document document, User user) {
         ArrayList<Borrow> borrows = this.borrows.get(borrow.getDocumentId());
         Borrow itsBorrow = null;
@@ -212,6 +338,15 @@ public class Library {
         return debt;
     }
 
+    /**
+     * Checks if there is a delay in returning documents by a user.
+     *
+     * @param borrow1  The borrow details.
+     * @param document The document being borrowed.
+     * @param user     The user borrowing the document.
+     * @param userId   The ID of the user.
+     * @return {@code true} if there is a delay, {@code false} otherwise.
+     */
     public boolean hasDelay(Borrow borrow1, Document document, User user, String userId) {
         int x = 0;
         for (ArrayList<Borrow> myBorrow : borrows.values()) {
@@ -227,6 +362,14 @@ public class Library {
         return x > 0;
     }
 
+    // !------------------------------------------------------------BUY
+    /**
+     * Handles the purchase of a book.
+     *
+     * @param documentID The ID of the book to be purchased.
+     * @return {@code true} if the book is successfully purchased, {@code false}
+     *         otherwise.
+     */
     public boolean buyBook(String documentID) {
         Document document = documents.get(documentID);
         if (document == null) {
@@ -250,6 +393,14 @@ public class Library {
 
     }
 
+    // !------------------------------------------------------------READ
+    /**
+     * Handles the process of reading a treasure book.
+     *
+     * @param read The Read object representing the reading activity.
+     * @return {@code true} if the book is successfully read, {@code false}
+     *         otherwise.
+     */
     public boolean readBook(Read read) {
         Document document = documents.get(read.getBookId());
         if (document == null) {
@@ -281,6 +432,13 @@ public class Library {
 
     }
 
+    /**
+     * Checks if there is a conflict between two reading activities.
+     *
+     * @param read1 The first reading activity.
+     * @param read2 The second reading activity.
+     * @return {@code true} if there is a conflict, {@code false} otherwise.
+     */
     public boolean conflict(Read read1, Read read2) {
         Date dateHold = read1.getDate1();
         Date dateHold2 = read2.getDate1();
@@ -295,6 +453,13 @@ public class Library {
         return Math.abs(periodTime) >= 2;
     }
 
+    // !------------------------------------------------------------SEARCH
+    /**
+     * Searches for documents based on the given key.
+     *
+     * @param key The key to search for in document titles, authors, and publishers.
+     * @return A HashSet containing the IDs of documents that match the search key.
+     */
     public HashSet<String> search(String key) {
         HashSet<String> output = new HashSet<>();
         for (Document document : documents.values()) {
@@ -324,12 +489,34 @@ public class Library {
         return output;
     }
 
+    // !------------------------------------------------------------CATEGORY_REPORT
+    /**
+     * Generates a report of the available copies of documents belonging to the
+     * specified category and its subcategories.
+     *
+     * @param category The category for which the report is generated.
+     * @return An array containing counts of available copies of different document
+     *         types:
+     *         Index 0: Count of available copies of books
+     *         Index 1: Count of available copies of theses
+     *         Index 2: Count of available copies of treasure books
+     *         Index 3: Count of available copies of buyable books
+     */
     public int[] categoryReport(Category category) {
         int[] bookCounts = new int[4];
         countBooksRecursivelyHelper(category, bookCounts);
         return bookCounts;
     }
 
+    /**
+     * Helper method to recursively count available copies of documents belonging to
+     * the specified category and its subcategories.
+     *
+     * @param category   The category for which document counts are being
+     *                   calculated.
+     * @param bookCounts An array to store the counts of available copies of
+     *                   different document types.
+     */
     public void countBooksRecursivelyHelper(Category category, int[] bookCounts) {
 
         for (Document document : documents.values()) {
@@ -359,6 +546,19 @@ public class Library {
 
     }
 
+    // !------------------------------------------------------------LIBRARY_REPORT
+    /**
+     * Generates a report summarizing the status of documents in the library.
+     *
+     * @return A string containing the counts of available copies, borrowed copies,
+     *         and specific types of documents in the library:
+     *         - Count of available copies of books
+     *         - Count of available copies of theses
+     *         - Count of borrowed copies of books
+     *         - Count of borrowed copies of theses
+     *         - Count of available copies of treasure books
+     *         - Count of available copies of buyable books
+     */
     public String libraryReport() {
         int bookNum = 0, thesisNum = 0, ganjineNum = 0, sellingBookNum = 0, borrowedBook = 0, borrowedThesis = 0;
 
@@ -385,34 +585,17 @@ public class Library {
                 + sellingBookNum;
     }
 
-    public int checkDebt(Borrow borrow, java.util.Date date) {
-        long firstMin = borrow.getDate().getTime() / 3600000; // getTime return time as millisecond
-        long secondMin = date.getTime() / 3600000; // getTime return time as millisecond
-        long periodTime = secondMin - firstMin;
-        if (borrow.isStudent()) {
-            if (borrow.isBook()) {
-                if (periodTime < (10 * 24)) {
-                    return 0;
-                }
-                return (int) ((periodTime - (10 * 24)) * 50); // BOOK AND STUDENT
-            }
-            if (periodTime < (7 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (7 * 24)) * 50); // THESIS AND STUDENT
-        }
-        if (borrow.isBook()) {
-            if (periodTime < (14 * 24)) {
-                return 0;
-            }
-            return (int) ((periodTime - (14 * 24)) * 100); // BOOK AND STAFF
-        }
-        if (periodTime < (10 * 24)) {
-            return 0;
-        }
-        return (int) ((periodTime - (10 * 24)) * 100);// THESIS AND STAFF
-    }
-
+    // !------------------------------------------------------------PASSED_DEAD_LINE
+    /**
+     * Generates a report of documents that have passed their deadline for return
+     * based on the given date.
+     *
+     * @param date The date to check for overdue documents.
+     * @return A StringBuilder containing the IDs of documents that have passed
+     *         their deadline, separated by "|" character.
+     *         If no documents are found to be overdue, an empty StringBuilder is
+     *         returned.
+     */
     public StringBuilder reportPassedDeadline(Date date) {
         HashSet<String> outPut = new HashSet<>();
         StringBuilder hold = new StringBuilder();
@@ -433,6 +616,18 @@ public class Library {
         return hold;
     }
 
+    // !------------------------------------------------------------REPORT_MOST_POPULAR
+    /**
+     * Generates a report of the most popular documents, based on the total time
+     * they have been borrowed.
+     * The report includes the document IDs, the count of times each document has
+     * been borrowed, and the total days borrowed.
+     * If there are no documents of a certain type (book or thesis), "null" is
+     * reported for that type.
+     *
+     * @return A formatted string containing the most popular book and thesis based
+     *         on borrowing statistics.
+     */
     public String reportMostPopular() {
         long tmp1 = 0;
         long tmp2 = 0;
@@ -480,6 +675,16 @@ public class Library {
 
     }
 
+    // !------------------------------------------------------------REPORT_SELL
+    /**
+     * Generates a report of the selling statistics, including the total number of
+     * books sold, the total money earned from sales,
+     * and details of the best-selling book (document ID, number sold, and total
+     * revenue).
+     *
+     * @return A formatted string containing the selling statistics and details of
+     *         the best-selling book.
+     */
     public String reportSell() {
 
         int x = 0;
@@ -511,6 +716,7 @@ public class Library {
                         * (maxSell.getCopyNumber() - maxSell.getAvailableCopyNumber());
 
     }
+    // !------------------------------------------------------------SETERS_AND_GETERS
 
     public String getLibraryId() {
 
