@@ -17,6 +17,8 @@ public class Document {
     private int countOfBorroewed;
     private int daysOfBorrowed;
 
+    private long timmmmmmmmmmmmmmmmmme;
+
     public Document(String docId, String title, String author, String publisher, String publicationYear, int copyNumber,
             String categoryId, String libraryId) {
         this.docId = docId;
@@ -31,6 +33,7 @@ public class Document {
         this.comments = new ArrayList<>();
         this.daysOfBorrowed = 0;
         this.countOfBorroewed = 0;
+        this.timmmmmmmmmmmmmmmmmme = 0;
 
     }
 
@@ -146,6 +149,14 @@ public class Document {
 
     public void setComments(ArrayList<String> comments) {
         this.comments = comments;
+    }
+
+    public long getTimmmmmmmmmmmmmmmmmme() {
+        return this.timmmmmmmmmmmmmmmmmme;
+    }
+
+    public void setTimmmmmmmmmmmmmmmmmme(long timmmmmmmmmmmmmmmmmme) {
+        this.timmmmmmmmmmmmmmmmmme += timmmmmmmmmmmmmmmmmme;
     }
 
 }

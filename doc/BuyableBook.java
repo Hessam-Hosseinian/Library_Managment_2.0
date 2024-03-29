@@ -10,6 +10,12 @@ public class BuyableBook extends Document {
 
     }
 
+    public int calculatePrice() {
+
+        return (int) Math.floor(this.price * (100.0 - this.discountAmount) / 100.0);
+
+    }
+
     private int price;
     private int discountAmount;
 

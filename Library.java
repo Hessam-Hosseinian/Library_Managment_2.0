@@ -50,6 +50,7 @@ public class Library {
         long periodTime = secondMin - firstMin;
         if (check) {
             document.setDaysOfBorrowed((int) Math.ceil(periodTime / 24.0));
+            document.setTimmmmmmmmmmmmmmmmmme(periodTime);
         }
         if (user instanceof Student) {
             if (document instanceof Book) {
@@ -438,25 +439,26 @@ public class Library {
     }
 
     public String reportMostPopular() {
-        int tmp = 0;
+        long tmp1 = 0;
+        long tmp2 = 0;
         Document documentBook = null;
         Document documentThesis = null;
 
         for (Document document : documents.values()) {
             if (document instanceof Book) {
-                // System.out.println(document.getDaysOfBorrowed() + " 22");
 
-                if (document.getDaysOfBorrowed() > tmp) {
+                if (document.getTimmmmmmmmmmmmmmmmmme() >= tmp1) {
 
+                    tmp1 = document.getTimmmmmmmmmmmmmmmmmme();
                     documentBook = document;
 
                 }
 
             }
             if (document instanceof Thesis) {
-                // System.out.println(document.getDaysOfBorrowed() + " 22");
 
-                if (document.getDaysOfBorrowed() > tmp) {
+                if (document.getTimmmmmmmmmmmmmmmmmme() >= tmp2) {
+                    tmp2 = document.getTimmmmmmmmmmmmmmmmmme();
                     documentThesis = document;
 
                 }
@@ -470,6 +472,38 @@ public class Library {
                 + documentBook.getDaysOfBorrowed() + "\n" +
                 documentThesis.getDocId() + " " + documentThesis.getCountOfBorroewed() + " "
                 + documentThesis.getDaysOfBorrowed();
+
+    }
+
+    public String reportSell() {
+
+        int x = 0;
+        int soldBooks = 0;
+        int moneyErnt = 0;
+
+        Document maxSell = null;
+        for (Document document : documents.values()) {
+
+            int thisBook = 0;
+            if (document instanceof BuyableBook) {
+                thisBook = (document.getCopyNumber() - document.getAvailableCopyNumber());
+                soldBooks += thisBook;
+                moneyErnt += ((BuyableBook) document).calculatePrice() * thisBook;
+
+                if (document.getCopyNumber() - document.getAvailableCopyNumber() > x) {
+                    x = document.getCopyNumber() - document.getAvailableCopyNumber();
+                    maxSell = document;
+
+                }
+
+            }
+
+        }
+
+        return "" + soldBooks + " " + moneyErnt + "\n" + maxSell.getDocId() + " "
+                + (maxSell.getCopyNumber() - maxSell.getAvailableCopyNumber()) + " "
+                + ((BuyableBook) maxSell).calculatePrice()
+                        * (maxSell.getCopyNumber() - maxSell.getAvailableCopyNumber());
 
     }
 

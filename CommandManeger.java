@@ -195,11 +195,11 @@ public class CommandManeger {
             }
         }
 
-        else if (input.contains("report-most-popular")) {
+        else if (input.contains("report-sell")) {
 
             if (manegment.checkManagerPermission(command[1], command[2], command[3])) {
 
-                reportMostPopular(command[3]);
+                reportSell(command[3]);
             }
         }
     }
@@ -397,15 +397,25 @@ public class CommandManeger {
         Date date = new Date(utilDate.getTime());
         System.out.println(manegment.reportPasseDeadline(libraryId, date));
     }
+    // ?---------------------------------------------------------------------
 
     public void reportPenaltiesSum() {
         System.out.println(manegment.reportPenaltiesSum());
     }
+    // ?---------------------------------------------------------------------
 
     public void reportMostPopular(String librayID) {
 
         System.out.println(manegment.reportMostPopular(librayID));
     }
+    // ?---------------------------------------------------------------------
+
+    public void reportSell(String libraryId) {
+
+        System.out.println(manegment.reportSell(libraryId));
+
+    }
+    // ?---------------------------------------------------------------------
 
     public void res() {
         manegment.res();

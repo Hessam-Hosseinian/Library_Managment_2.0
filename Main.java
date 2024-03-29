@@ -13,7 +13,7 @@ public class Main {
 
             input = scanner.nextLine();
 
-            if (input.equals("res")) {
+            if (input.equals("res")) {// this is for testing the code by myself
 
                 comandManeger.res();
             }

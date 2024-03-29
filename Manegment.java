@@ -662,6 +662,7 @@ public class Manegment {
         return "" + sum;
 
     }
+    // !-------------------------------------------------------------------------------------------
 
     public String reportMostPopular(String libraryId) {
 
@@ -672,6 +673,17 @@ public class Manegment {
 
         return targrtLibrary.reportMostPopular();
 
+    }
+
+    // !-------------------------------------------------------------------------------------------
+    public String reportSell(String libraryId) {
+
+        Library targrtLibrary = libraries.get(libraryId);
+        if (targrtLibrary == null) {
+            return "not-found";
+        }
+
+        return targrtLibrary.reportSell();
     }
 
     public void res() {
