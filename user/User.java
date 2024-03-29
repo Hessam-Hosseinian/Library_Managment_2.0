@@ -3,7 +3,7 @@ package user;
 /**
  * The User class represents a user in the system.
  * 
- * @author Hessam Hosseinan
+ * @author Hessam Hosseinian
  */
 public class User {
     private String userId;
