@@ -1,5 +1,10 @@
 package user;
 
+/**
+ * The User class represents a user in the system.
+ * 
+ * @author Hessam Hosseinan
+ */
 public class User {
     private String userId;
     private String password;
@@ -10,6 +15,17 @@ public class User {
     private String address;
     private int debt;
 
+    /**
+     * Constructs a new User object with the specified attributes.
+     *
+     * @param userId     The unique identifier of the user.
+     * @param password   The password of the user.
+     * @param firstName  The first name of the user.
+     * @param lastName   The last name of the user.
+     * @param nationalId The national ID of the user.
+     * @param birthDay   The birth date of the user.
+     * @param address    The address of the user.
+     */
     public User(String userId, String password, String firstName, String lastName, String nationalId, String birthDay,
             String address) {
         this.userId = userId;
@@ -22,6 +38,7 @@ public class User {
         this.debt = 0;
     }
 
+    // !-------------------------------------------USER_ID
     public String getUserId() {
         return this.userId;
     }
@@ -30,6 +47,11 @@ public class User {
         this.userId = userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    // !-------------------------------------------PASSWORD
+
     public String getPassword() {
         return this.password;
     }
@@ -37,6 +59,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    // !-------------------------------------------FIRST_NAME
 
     public String getFirstName() {
         return this.firstName;
@@ -45,6 +68,7 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+    // !-------------------------------------------LAST_NAME
 
     public String getLastName() {
         return this.lastName;
@@ -53,6 +77,7 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    // !-------------------------------------------NATION_ID
 
     public String getNationalId() {
         return this.nationalId;
@@ -61,6 +86,7 @@ public class User {
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
     }
+    // !-------------------------------------------BIRTHDAY
 
     public String getBirthDay() {
         return this.birthDay;
@@ -69,6 +95,7 @@ public class User {
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
+    // !-------------------------------------------ADDRESS
 
     public String getAddress() {
         return this.address;
@@ -78,9 +105,7 @@ public class User {
         this.address = address;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    // !-------------------------------------------DEBT
 
     public int getDebt() {
         return this.debt;
