@@ -23,13 +23,8 @@ public class Library {
     private String foundationYear;
     private int deskNumber;
     private String address;
-
-    // private HashMap<String, Manager> managers;
-
     private HashMap<String, Document> documents;
-
     private HashMap<String, ArrayList<Borrow>> borrows;
-
     private HashMap<String, Read> reads;
 
     public Library(String libraryId, String libraryName, String foundationYear, int deskNumber, String address) {
@@ -50,7 +45,7 @@ public class Library {
         long periodTime = secondMin - firstMin;
         if (check) {
             document.setDaysOfBorrowed((int) Math.ceil(periodTime / 24.0));
-            document.setTimmmmmmmmmmmmmmmmmme(periodTime);
+            document.setTimeThatdocIsUnderBorrow(periodTime);
         }
         if (user instanceof Student) {
             if (document instanceof Book) {
@@ -447,9 +442,9 @@ public class Library {
         for (Document document : documents.values()) {
             if (document instanceof Book) {
 
-                if (document.getTimmmmmmmmmmmmmmmmmme() >= tmp1) {
+                if (document.getTimeThatdocIsUnderBorrow() >= tmp1) {
 
-                    tmp1 = document.getTimmmmmmmmmmmmmmmmmme();
+                    tmp1 = document.getTimeThatdocIsUnderBorrow();
                     documentBook = document;
 
                 }
@@ -457,14 +452,24 @@ public class Library {
             }
             if (document instanceof Thesis) {
 
-                if (document.getTimmmmmmmmmmmmmmmmmme() >= tmp2) {
-                    tmp2 = document.getTimmmmmmmmmmmmmmmmmme();
+                if (document.getTimeThatdocIsUnderBorrow() >= tmp2) {
+                    tmp2 = document.getTimeThatdocIsUnderBorrow();
                     documentThesis = document;
 
                 }
 
             }
 
+        }
+        if (documentBook == null) {
+            return "null" + "\n"
+                    + documentThesis.getDocId() + " " + documentThesis.getCountOfBorroewed() + " "
+                    + documentThesis.getDaysOfBorrowed();
+        }
+        if (documentThesis == null) {
+            return documentBook.getDocId() + " " + documentBook.getCountOfBorroewed() + " "
+                    + documentBook.getDaysOfBorrowed() + "\n"
+                    + "null";
         }
 
         return "" + documentBook.getDocId() + " " +
