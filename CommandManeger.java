@@ -182,10 +182,26 @@ public class CommandManeger {
         }
 
         else if (input.contains("report-penalties-sum")) {
-
-            reportPenaltiesSum(command[1], command[2]);
+            if (manegment.checkAdminPermission(command[1], command[2])) {
+                reportPenaltiesSum();
+            }
         }
 
+        else if (input.contains("report-most-popular")) {
+
+            if (manegment.checkManagerPermission(command[1], command[2], command[3])) {
+
+                reportMostPopular(command[3]);
+            }
+        }
+
+        else if (input.contains("report-most-popular")) {
+
+            if (manegment.checkManagerPermission(command[1], command[2], command[3])) {
+
+                reportMostPopular(command[3]);
+            }
+        }
     }
 
     // !--------------------------------------------------------------------------------------------------
@@ -364,14 +380,14 @@ public class CommandManeger {
 
     // ?---------------------------------------------------------------------
     public void categoryReport(String categoryId, String librayId) {
+
         manegment.categoryReport(categoryId, librayId);
     }
     // ?---------------------------------------------------------------------
 
     public void libraryReport(String libraryId) {
 
-        manegment.libraryReport(libraryId);
-
+        System.out.println(manegment.libraryReport(libraryId));
     }
     // ?---------------------------------------------------------------------
 
@@ -382,8 +398,13 @@ public class CommandManeger {
         System.out.println(manegment.reportPasseDeadline(libraryId, date));
     }
 
-    public void reportPenaltiesSum(String managerID, String managerPass) {
-        System.out.println(manegment.reportPenaltiesSum(managerID, managerPass));
+    public void reportPenaltiesSum() {
+        System.out.println(manegment.reportPenaltiesSum());
+    }
+
+    public void reportMostPopular(String librayID) {
+
+        System.out.println(manegment.reportMostPopular(librayID));
     }
 
     public void res() {

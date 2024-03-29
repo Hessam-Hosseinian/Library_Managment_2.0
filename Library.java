@@ -48,9 +48,9 @@ public class Library {
         long firstMin = borrow.getDate().getTime() / 3600000;
         long secondMin = returnTime.getTime() / 3600000;
         long periodTime = secondMin - firstMin;
-        // if (check) {
-        // document.setDayOfBorrowed((int) Math.ceil(periodTime / 24.0));
-        // }
+        if (check) {
+            document.setDaysOfBorrowed((int) Math.ceil(periodTime / 24.0));
+        }
         if (user instanceof Student) {
             if (document instanceof Book) {
                 if (periodTime < (10 * 24)) {
@@ -104,7 +104,7 @@ public class Library {
                 borrows1.add(borrow);
                 borrows.put(borrow.getDocumentId(), borrows1);
                 document.decreaseAvailableCopyNumber();
-                // todo document.borrowed();
+                document.increaseCountOfBorrowed();
                 return true;
             }
             return false;
@@ -113,7 +113,7 @@ public class Library {
                 borrows1.add(borrow);
                 borrows.put(borrow.getDocumentId(), borrows1);
                 document.decreaseAvailableCopyNumber();
-                // todo resource.borrowed();
+                document.increaseCountOfBorrowed();
                 return true;
             }
             return false;
@@ -121,7 +121,7 @@ public class Library {
         return false;
     }
 
-    private boolean isBorrowedByUser(String userId, String resourceId) { // check that user get this resource or not
+    private boolean isBorrowedByUser(String userId, String resourceId) {
         ArrayList<Borrow> myBorrow = borrows.get(resourceId);
         if (myBorrow == null) {
             return false;
@@ -340,18 +340,21 @@ public class Library {
             if (document.getCategoryId().equals(category.getCategoryId())) {
 
                 if (document instanceof Book) {
-                    bookCounts[0] += document.getCopyNumber();
+                    bookCounts[0] += document.getAvailableCopyNumber();
                 }
                 if (document instanceof Thesis) {
-                    bookCounts[1] += document.getCopyNumber();
+                    bookCounts[1] += document.getAvailableCopyNumber();
                 }
                 if (document instanceof TreasureBook) {
-                    bookCounts[2] += document.getCopyNumber();
+                    bookCounts[2] += document.getAvailableCopyNumber();
                 }
                 if (document instanceof BuyableBook) {
-                    bookCounts[3] += document.getCopyNumber();
+                    bookCounts[3] += document.getAvailableCopyNumber();
                 }
             }
+        }
+        if (category.getCategoryId().equals("null")) {
+            return;
         }
         ArrayList<Category> subs = category.getSubCategory();
         for (Category category2 : subs) {
@@ -366,27 +369,19 @@ public class Library {
         for (Document document : documents.values()) {
 
             if (document instanceof Book) {
-                bookNum += document.getCopyNumber();
+                bookNum += document.getAvailableCopyNumber();
+                borrowedBook += (document.getCopyNumber() - document.getAvailableCopyNumber());
             }
             if (document instanceof Thesis) {
-                thesisNum += document.getCopyNumber();
+                thesisNum += document.getAvailableCopyNumber();
+                borrowedThesis += (document.getCopyNumber() - document.getAvailableCopyNumber());
+
             }
             if (document instanceof TreasureBook) {
-                ganjineNum += document.getCopyNumber();
+                ganjineNum += document.getAvailableCopyNumber();
             }
             if (document instanceof BuyableBook) {
                 sellingBookNum += document.getAvailableCopyNumber();
-            }
-        }
-        for (ArrayList<Borrow> borrows1 : new ArrayList<>(borrows.values())) {
-            for (Borrow borrow : borrows1) {
-                if (borrow.isBook()) {
-                    borrowedBook++;
-                }
-
-                else {
-                    borrowedThesis++;
-                }
             }
         }
 
@@ -427,19 +422,55 @@ public class Library {
         StringBuilder hold = new StringBuilder();
         for (ArrayList<Borrow> borrows1 : new ArrayList<>(borrows.values())) {
             for (Borrow borrow : borrows1) {
-                if (checkDebt(borrow, date) != 0) {// check if there is debt for the borrow and date
+                if (checkDebt(borrow, date) != 0) {
                     outPut.add(borrow.getDocumentId());
                 }
             }
         }
 
         ArrayList<String> outputArray = new ArrayList<>(outPut);
-        Collections.sort(outputArray); // sort the list and separate them whit "|"
+        Collections.sort(outputArray);
         for (String i : outputArray) {
             hold.append(i);
             hold.append("|");
         }
         return hold;
+    }
+
+    public String reportMostPopular() {
+        int tmp = 0;
+        Document documentBook = null;
+        Document documentThesis = null;
+
+        for (Document document : documents.values()) {
+            if (document instanceof Book) {
+                // System.out.println(document.getDaysOfBorrowed() + " 22");
+
+                if (document.getDaysOfBorrowed() > tmp) {
+
+                    documentBook = document;
+
+                }
+
+            }
+            if (document instanceof Thesis) {
+                // System.out.println(document.getDaysOfBorrowed() + " 22");
+
+                if (document.getDaysOfBorrowed() > tmp) {
+                    documentThesis = document;
+
+                }
+
+            }
+
+        }
+
+        return "" + documentBook.getDocId() + " " +
+                documentBook.getCountOfBorroewed() + " "
+                + documentBook.getDaysOfBorrowed() + "\n" +
+                documentThesis.getDocId() + " " + documentThesis.getCountOfBorroewed() + " "
+                + documentThesis.getDaysOfBorrowed();
+
     }
 
     public String getLibraryId() {

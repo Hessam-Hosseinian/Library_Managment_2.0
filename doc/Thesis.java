@@ -7,6 +7,7 @@ public class Thesis extends Document {
         super(docId, title, "-", "-", publicationYear, 1, categoryId, libraryId);
         this.studentName = studentName;
         this.professorName = professorName;
+
     }
 
     private String studentName;

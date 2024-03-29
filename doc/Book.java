@@ -6,6 +6,7 @@ public class Book extends Document {
             String categoryId, String libraryId) {
         super(docId, title, author, publisher, publicationYear, copyNumber, categoryId, libraryId);
         // TODO Auto-generated constructor stub
+
     }
 
 }

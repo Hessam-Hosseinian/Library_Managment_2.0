@@ -14,6 +14,8 @@ public class Document {
     private String libraryId;
     private int availableCopyNumber;
     private ArrayList<String> comments;
+    private int countOfBorroewed;
+    private int daysOfBorrowed;
 
     public Document(String docId, String title, String author, String publisher, String publicationYear, int copyNumber,
             String categoryId, String libraryId) {
@@ -27,7 +29,29 @@ public class Document {
         this.libraryId = libraryId;
         this.availableCopyNumber = copyNumber;
         this.comments = new ArrayList<>();
+        this.daysOfBorrowed = 0;
+        this.countOfBorroewed = 0;
 
+    }
+
+    public int getCountOfBorroewed() {
+        return this.countOfBorroewed;
+    }
+
+    public void setCountOfBorroewed(int countOfBorroewed) {
+        this.countOfBorroewed = countOfBorroewed;
+    }
+
+    public int getDaysOfBorrowed() {
+        return this.daysOfBorrowed;
+    }
+
+    public void increaseCountOfBorrowed() {
+        countOfBorroewed++;
+    }
+
+    public void setDaysOfBorrowed(int daysOfBorrowed) {
+        this.daysOfBorrowed += daysOfBorrowed;
     }
 
     public void addComment(String comment) {

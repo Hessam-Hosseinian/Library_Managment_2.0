@@ -508,7 +508,7 @@ public class Manegment {
             return "invalid-pass";
 
         }
-        if (targetUser instanceof Staff) {
+        if (targetUser instanceof Staff || targetUser instanceof Manager) {
             return "permission-denied";
 
         }
@@ -561,7 +561,7 @@ public class Manegment {
             return new StringBuilder("invalid-pass");
 
         }
-        if (!(user instanceof Professor || user instanceof Staff)) {
+        if (user instanceof Student) {
 
             return new StringBuilder("permission-denied");
 
@@ -611,9 +611,8 @@ public class Manegment {
             return;
 
         }
-        Category targeCategory = categories.get(categoryId);
 
-        int[] count = targetLibrary.categoryReport(targeCategory);
+        int[] count = targetLibrary.categoryReport(targetCategory);
         System.out.println(count[0] + " " + count[1] + " " + count[2] + " " + count[3]);
 
     }
@@ -653,23 +652,25 @@ public class Manegment {
     }
     // !-------------------------------------------------------------------------------------------
 
-    public String reportPenaltiesSum(String managerID, String managetPass) {
+    public String reportPenaltiesSum() {
 
-        User targetUser = users.get(managerID);
-        if (targetUser == null) {
-            return "not-found";
-
-        }
-        if (!(targetUser.getPassword().equals(managetPass))) {
-            return "invalid-pass";
-
-        }
         int sum = 0;
         for (User user : users.values()) {
             sum += user.getDebt();
         }
 
         return "" + sum;
+
+    }
+
+    public String reportMostPopular(String libraryId) {
+
+        Library targrtLibrary = libraries.get(libraryId);
+        if (targrtLibrary == null) {
+            return "not-found";
+        }
+
+        return targrtLibrary.reportMostPopular();
 
     }
 
