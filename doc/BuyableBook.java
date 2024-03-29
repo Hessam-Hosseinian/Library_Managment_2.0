@@ -5,7 +5,7 @@ package doc;
  * library system.
  * It extends the Document class and inherits its properties and methods.
  * 
- * @author Hessam Hosseinan
+ * @author Hessam Hosseinian
  */
 public class BuyableBook extends Document {
 
