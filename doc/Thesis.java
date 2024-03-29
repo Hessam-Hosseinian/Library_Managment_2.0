@@ -3,6 +3,8 @@ package doc;
 /**
  * The Thesis class represents a thesis document in a library system.
  * It extends the Document class and inherits its properties and methods.
+ * 
+ * @author Hessam Hosseinan
  */
 public class Thesis extends Document {
 
