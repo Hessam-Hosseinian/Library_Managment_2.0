@@ -2,16 +2,19 @@ import user.Professor;
 import user.Staff;
 import user.Student;
 import user.Manager;
-
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import doc.Book;
 import doc.BuyableBook;
 import doc.Thesis;
 import doc.TreasureBook;
 
+/**
+ * The CommandManeger class examines an input to process.
+ * 
+ * @author Hessam Hosseinian
+ */
 public class CommandManeger {
 
     Manegment manegment = new Manegment();
