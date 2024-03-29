@@ -4,7 +4,7 @@ package doc;
  * The Book class represents a book document in a library system.
  * It extends the Document class and inherits its properties and methods.
  * 
- * @author Hessam Hosseinan
+ * @author Hessam Hosseinian
  */
 public class Book extends Document {
 
