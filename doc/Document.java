@@ -24,6 +24,7 @@ public class Document {
     private ArrayList<String> comments;
 
     // ?-----------------------------------------------------------------------------------------------------------
+
     /**
      * Constructs a new Document object with the specified attributes.
      *
