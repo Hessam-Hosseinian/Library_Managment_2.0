@@ -6,6 +6,8 @@ import java.util.ArrayList;
  * The Document class represents a generic document in a library system.
  * It serves as a superclass for more specific document types like books,
  * theses,buyablebooks and treasurebooks .
+ * 
+ * @author Hessam Hosseinan
  */
 public class Document {
 
