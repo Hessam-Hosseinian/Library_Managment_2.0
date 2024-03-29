@@ -4,6 +4,8 @@ package doc;
  * The BuyableBook class represents a book document that can be purchased in a
  * library system.
  * It extends the Document class and inherits its properties and methods.
+ * 
+ * @author Hessam Hosseinan
  */
 public class BuyableBook extends Document {
 
