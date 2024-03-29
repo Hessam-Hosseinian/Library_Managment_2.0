@@ -9,14 +9,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String input = new String();
         CommandManeger comandManeger = new CommandManeger();
+
         while (!input.equals("finish")) {
 
             input = scanner.nextLine();
 
-            if (input.equals("res")) {// this is for testing the code by myself
+            // if (input.equals("res")) { // this is for testing the code by myself
 
-                comandManeger.res();
-            }
+            // comandManeger.res();
+            // }
 
             comandManeger.input(input);
 
@@ -24,5 +25,4 @@ public class Main {
 
         scanner.close();
     }
-
 }
