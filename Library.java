@@ -637,7 +637,7 @@ public class Library {
         for (Document document : documents.values()) {
             if (document instanceof Book) {
 
-                if (document.getTimeThatdocIsUnderBorrow() >= tmp1) {
+                if (document.getTimeThatdocIsUnderBorrow() > tmp1) {
 
                     tmp1 = document.getTimeThatdocIsUnderBorrow();
                     documentBook = document;
@@ -647,7 +647,7 @@ public class Library {
             }
             if (document instanceof Thesis) {
 
-                if (document.getTimeThatdocIsUnderBorrow() >= tmp2) {
+                if (document.getTimeThatdocIsUnderBorrow() > tmp2) {
                     tmp2 = document.getTimeThatdocIsUnderBorrow();
                     documentThesis = document;
 
