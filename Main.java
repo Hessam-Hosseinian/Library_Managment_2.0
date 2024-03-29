@@ -2,6 +2,12 @@
 import java.text.ParseException;
 import java.util.Scanner;
 
+/**
+ * Main class of Library_Managment_2.0
+ *
+ * @author Hessam Hosseinian
+ */
+
 public class Main {
 
     public static void main(String[] args) throws ParseException {
