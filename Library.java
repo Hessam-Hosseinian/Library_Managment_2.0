@@ -645,6 +645,7 @@ public class Library {
                 }
 
             }
+
             if (document instanceof Thesis) {
 
                 if (document.getTimeThatdocIsUnderBorrow() > tmp2) {
