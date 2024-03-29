@@ -5,7 +5,7 @@ package doc;
  * that is considered a treasure. It extends the Document class and inherits its
  * properties and methods.
  * 
- * @author Hessam Hosseinan
+ * @author Hessam Hosseinian
  */
 public class TreasureBook extends Document {
 
