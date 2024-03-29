@@ -4,6 +4,8 @@ package doc;
  * The TreasureBook class represents a special book document in a library system
  * that is considered a treasure. It extends the Document class and inherits its
  * properties and methods.
+ * 
+ * @author Hessam Hosseinan
  */
 public class TreasureBook extends Document {
 
