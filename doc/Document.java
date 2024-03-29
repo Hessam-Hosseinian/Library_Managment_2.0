@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * It serves as a superclass for more specific document types like books,
  * theses,buyablebooks and treasurebooks .
  * 
- * @author Hessam Hosseinan
+ * @author Hessam Hosseinian
  */
 public class Document {
 
